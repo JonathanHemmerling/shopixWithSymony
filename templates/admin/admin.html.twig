@@ -1,0 +1,15 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}Detail{% endblock %}
+
+{% block body %}
+
+    <h1>Admin</h1>
+
+    <ul class="admin">
+    {% for admin in admins %}
+        <li><a href="{{ url('admin', {'id' : admin.id}) }}">{{ admin.adminName }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

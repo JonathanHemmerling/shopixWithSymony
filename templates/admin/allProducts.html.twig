@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+
+    <h2>Products</h2>
+<a href="{{ url('adminCreateProduct', {'mainId' : mainId}) }}">Create new Product</a>
+<div>
+    <table>
+        <tr>
+        </tr>
+        {%for product in products%}
+            <tr>
+                <td>
+                    <a href="{{ url('adminProduct', {'productId' : product.id}) }}">{{ product.displayName }}</a>
+                </td>
+                <td>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+    <a href="{{ path('entry') }}">Home</a>
+{% endblock %}
+
+

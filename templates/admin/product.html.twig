@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+
+    <h2>Product</h2>
+
+    {{ form(saveProduct) }}
+
+    {% for product in productById %}
+        <a href="{{ path('adminProductDelete', {'productId' : product.id, 'mainId' : product.mainId}) }}">Delete</a>
+    {% endfor %}
+    <a href="{{ path('entry') }}">Home</a>
+
+{% endblock %}

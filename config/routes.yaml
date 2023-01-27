@@ -3,3 +3,10 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+logout:
+    path: /logout
+controllers_product:
+    resource:
+        path: ../src/Component/Product/Communication/
+        namespace: App\Component\Product\Communication
+    type: attribute

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Menu{% endblock %}
+
+{% block body %}
+
+    <h2>Productcategorys</h2>
+    <ul class="mainMenu">
+    {%for menuItem in menu %}
+        <li><a href="{{ url('allProducts', {'mainId' : menuItem.id}) }}">{{ menuItem.displayName }}</a></li>
+    {% endfor %}
+    </ul>
+    <div>
+        <form action="/logout" method="post">
+            <input type="submit" name="logout" value="Logout">
+        </form>
+    </div>
+
+{% endblock %}

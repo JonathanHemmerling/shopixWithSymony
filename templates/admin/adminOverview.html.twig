@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adminarea{% endblock %}
+
+{% block body %}
+
+    <h2>Adminarea</h2>
+    <div>
+        <a href="{{ path('adminMainMenu') }}">- Productdata</a>
+        <br />
+        <a href="{{ path('adminUserOverview') }}">- Userdata</a>
+    </div>
+    <br />
+    <div>
+        <form action="/logout" method="post">
+            <input type="submit" name="logout" value="Logout">
+        </form>
+    </div>
+
+{% endblock %}
