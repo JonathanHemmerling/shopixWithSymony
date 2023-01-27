@@ -12,12 +12,20 @@ class UserDataEntityManager
     {
 
     }
-    public function addNewUserDataArrayToDb(UserDataTransferObject $userData): void
+    public function create(UserDataTransferObject $userData): void
     {
         $newUser = new User();
         $newUser->setEmail($userData->email);
         $newUser->setPassword($userData->password);
         $this->entityManager->persist($newUser);
+        $this->entityManager->flush();
+    }
+    public function save(UserDataTransferObject $userData): void
+    {
+        $editedUser = new User();
+        $editedUser->setEmail($userData->email);
+        $editedUser->setPassword($userData->password);
+        $this->entityManager->persist($editedUser);
         $this->entityManager->flush();
     }
 }

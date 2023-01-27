@@ -176,7 +176,7 @@ class AdminProductControllerTest extends WebTestCase
         $this->client->request(
             'POST',
             '/admin/product/1', [
-                'save_product_form' =>
+                'product_save_form' =>
                     [
                         'mainId' => 1,
                         'productName' => 'createTest',

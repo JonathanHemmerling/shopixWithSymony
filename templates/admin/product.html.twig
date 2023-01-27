@@ -7,7 +7,7 @@
 
     <h2>Product</h2>
 
-    {{ form(saveProduct) }}
+    {{ form(ProductSaveForm) }}
 
     {% for product in productById %}
         <a href="{{ path('adminProductDelete', {'productId' : product.id, 'mainId' : product.mainId}) }}">Delete</a>
