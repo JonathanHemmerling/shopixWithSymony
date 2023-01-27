@@ -13,6 +13,7 @@ use App\Component\Product\Persistence\ProductEntityManager;
 use App\Component\Product\Persistence\ProductRepository;
 use App\DTO\MainMenuDataTransferObject;
 use App\DTO\ProductsDataTransferObject;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,19 +85,12 @@ class AdminProductController extends AbstractController
     public function saveChangedProductData(Request $request, $productId): Response
     {
         $findProduct = $this->productRepository->findBy(['id' => $productId]);
-        $productDTO = new ProductsDataTransferObject(
-            null,
-            $findProduct[0]->mainId,
-            $findProduct[0]->productName,
-            $findProduct[0]->displayName,
-            $findProduct[0]->description,
-            $findProduct[0]->price
-        );
-        $saveProduct = $this->createForm(ProductSaveForm::class, $productDTO);
+        $product = new Product();
+        $saveProduct = $this->createForm(ProductSaveForm::class, $product);
         $saveProduct->handleRequest($request);
 
         if ($saveProduct->isSubmitted() && $saveProduct->isValid()) {
-            $this->fascade->save($productDTO);
+            $this->fascade->save($product);
             return $this->redirectToRoute('adminMainMenu');
         }
 
