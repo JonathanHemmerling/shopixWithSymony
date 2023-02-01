@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Persistence;
 
-use App\DTO\ProductsDataTransferObject;
+
+use App\DTO\ProductDataTransferObject;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,7 +16,7 @@ class ProductEntityManager
     }
 
     //erst mit test abdecken
-    public function create(ProductsDataTransferObject $productData): void
+    public function create(ProductDataTransferObject $productData): void
     {
         $newProduct = new Product();
         $newProduct->setMainId($productData->mainId);
@@ -27,9 +28,9 @@ class ProductEntityManager
         $this->entityManager->flush();
     }
 
-    public function save(ProductsDataTransferObject $productData): void
+    public function save(Product $product, ProductDataTransferObject $productData): void
     {
-        $savedProduct = new Product();
+        $savedProduct = $product;
         $savedProduct->setMainId($productData->mainId);
         $savedProduct->setDisplayName($productData->displayName);
         $savedProduct->setProductName($productData->productName);

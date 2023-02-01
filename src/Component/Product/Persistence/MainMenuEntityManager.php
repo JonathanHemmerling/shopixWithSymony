@@ -24,9 +24,9 @@ class MainMenuEntityManager
         $this->entityManager->flush();
     }
 
-    public function save(MainMenuDataTransferObject $mainMenuData): void
+    public function save(MainCategorys $mainCategorys, MainMenuDataTransferObject $mainMenuData): void
     {
-        $newCategory = new MainCategorys();
+        $newCategory = $mainCategorys;
         $newCategory->setDisplayName($mainMenuData->displayName);
         $newCategory->setMainCategoryName($mainMenuData->mainCategoryName);
         $this->entityManager->persist($newCategory);

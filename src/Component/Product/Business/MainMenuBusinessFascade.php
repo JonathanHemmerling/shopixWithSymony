@@ -6,6 +6,7 @@ namespace App\Component\Product\Business;
 
 use App\Component\Product\Persistence\MainMenuEntityManager;
 use App\DTO\MainMenuDataTransferObject;
+use App\Entity\MainCategorys;
 
 class MainMenuBusinessFascade
 {
@@ -18,9 +19,9 @@ class MainMenuBusinessFascade
         $this->entityManager->create($dataTransferObject);
     }
 
-    public function save(MainMenuDataTransferObject $dataTransferObject):void
+    public function save(MainCategorys $mainCategorys, MainMenuDataTransferObject $dataTransferObject):void
     {
-        $this->entityManager->save($dataTransferObject);
+        $this->entityManager->save($mainCategorys, $dataTransferObject);
     }
 
 //save Product-> call entitymanager and save-> mit DTO-> DTO Übergeben an FORM

@@ -1,0 +1,201 @@
+id,art,product_name,preis,category,desc,attr1,attr2,attr3
+1,185540242-4,"Veal - Insides, Grains","€69,89",Electronics,in quis justo maecenas,n/a,n/a,Consumer Services
+2,868719267-3,"Pasta - Tortellini, Fresh","€135,50",Shoes,proin risus praesent lectus vestibulum quam sapien varius,Capital Goods,n/a,
+3,547895317-2,Cherries - Fresh,"€18,22",Clothing,mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel,n/a,Transportation,Capital Goods
+4,579129745-9,Alize Red Passion,"€17,24",Games,primis in faucibus orci luctus et,Consumer Services,Consumer Services,
+5,894196890-9,Clam Nectar,"€87,73",Industrial,lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc,Technology,Finance,Finance
+6,216869892-9,Pepper - Pablano,"€141,43",Industrial,lacus at turpis donec posuere metus vitae ipsum aliquam,Health Care,Finance,Capital Goods
+7,651062029-4,Longos - Chicken Wings,"€111,64",Music,lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum,Capital Goods,Health Care,Finance
+8,680527487-7,Mushroom - King Eryingii,"€17,05",Grocery,,,n/a,Basic Industries
+9,,Bay Leaf Fresh,,Kids,ligula in lacus curabitur at,Finance,Finance,
+10,710447657-1,Appetizer - Shrimp Puff,"€67,19",Jewelry,nisl aenean lectus pellentesque,n/a,n/a,n/a
+11,141687864-5,Dried Figs,"€45,11",Games,tempus vivamus in felis eu sapien cursus,n/a,Consumer Services,Consumer Durables
+12,644180411-5,Garlic - Peeled,"€133,11",Baby,orci luctus et ultrices posuere cubilia curae mauris,Health Care,Finance,Finance
+13,600071710-5,Sugar - Icing,"€11,21",Music,nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at nibh in,Basic Industries,Miscellaneous,
+14,418307640-4,Oysters - Smoked,"€36,43",Garden,lacus at velit vivamus vel nulla eget eros elementum,Technology,Health Care,
+15,537951099-X,Energy Drink - Franks Pineapple,"€89,38",Garden,hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at,Finance,Health Care,Health Care
+16,493711680-0,Drambuie,"€89,64",Grocery,nulla justo aliquam quis turpis,Energy,Health Care,Miscellaneous
+17,114426617-3,Beans - Green,"€79,96",Movies,nisl duis bibendum felis sed interdum,Miscellaneous,Consumer Durables,
+18,777662868-9,Spice - Paprika,"€126,44",Garden,suscipit ligula in lacus curabitur at ipsum ac tellus semper,Finance,Public Utilities,Miscellaneous
+19,785943100-9,Initation Crab Meat,"€145,22",Clothing,dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non pretium quis,Basic Industries,Health Care,Technology
+20,047772506-6,"Juice - Tomato, 48 Oz","€72,55",Garden,lectus vestibulum quam sapien varius ut blandit non interdum in ante,Consumer Non-Durables,n/a,Consumer Services
+21,668207188-4,Longos - Penne With Pesto,"€11,71",Toys,gravida nisi at nibh in hac habitasse platea dictumst,Health Care,n/a,
+22,568538955-8,Wine - Sicilia Igt Nero Avola,"€48,91",Movies,sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui,Basic Industries,Basic Industries,n/a
+23,938980685-2,Sea Urchin,"€139,84",Books,maecenas ut massa quis augue luctus,Finance,n/a,n/a
+24,196685573-7,Cheese - Cottage Cheese,"€35,45",Garden,morbi odio odio elementum eu interdum eu tincidunt in leo,Finance,Transportation,Consumer Services
+25,724156057-4,Beef - Tenderloin,"€57,98",Baby,sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et,Finance,Consumer Services,Technology
+26,065198190-5,Wine - Gato Negro Cabernet,"€141,49",Outdoors,maecenas rhoncus aliquam lacus morbi quis tortor id nulla,Health Care,Consumer Services,Technology
+27,841284503-X,Sprouts - China Rose,"€136,46",Home,metus aenean fermentum donec ut mauris eget,Capital Goods,n/a,Consumer Services
+28,173018114-7,"Coffee - Colombian, Portioned","€123,01",Books,viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec,Finance,Health Care,n/a
+29,049014892-1,"Gingerale - Schweppes, 355 Ml","€92,93",Outdoors,ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis,n/a,Transportation,Capital Goods
+30,087109052-X,Lettuce - Treviso,"€69,34",Shoes,donec vitae nisi nam ultrices libero non mattis,n/a,Finance,Finance
+31,482146801-8,Wine - Tio Pepe Sherry Fino,"€69,63",Tools,leo pellentesque ultrices mattis odio donec vitae nisi,Finance,Health Care,Technology
+32,554563299-9,"Fish - Soup Base, Bouillon","€105,93",Beauty,potenti cras in purus eu magna vulputate luctus cum sociis,Finance,Finance,Finance
+33,652238255-5,"Cup - 6oz, Foam","€85,95",Garden,eleifend donec ut dolor morbi vel lectus in,Technology,Health Care,
+34,999803950-9,Beef - Tenderloin Tails,"€84,02",Outdoors,vestibulum velit id pretium iaculis diam erat fermentum justo nec,Consumer Durables,Consumer Services,
+35,180760264-8,"Juice - Grapefruit, 341 Ml","€49,34",Tools,non lectus aliquam sit amet diam in magna bibendum imperdiet nullam,Finance,n/a,n/a
+36,973697717-X,Limes,"€143,78",Music,morbi a ipsum integer a nibh in quis,Capital Goods,n/a,Energy
+37,251576110-0,Pork - Bacon Cooked Slcd,"€51,61",Industrial,penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum,Consumer Durables,n/a,Health Care
+38,270038452-0,Mushroom - White Button,"€20,19",Outdoors,amet eleifend pede libero quis orci nullam molestie,Public Utilities,Basic Industries,
+39,431879200-5,Water - San Pellegrino,"€78,19",Shoes,montes nascetur ridiculus mus vivamus vestibulum sagittis sapien,Technology,Finance,n/a
+40,200511538-X,Appetizer - Escargot Puff,"€59,33",Movies,metus sapien ut nunc vestibulum ante ipsum,Capital Goods,Consumer Non-Durables,Technology
+41,600068588-2,"Club Soda - Schweppes, 355 Ml","€53,77",Grocery,lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc,Technology,,Technology
+42,457496668-8,Pizza Pizza Dough,"€72,03",Kids,scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis,Capital Goods,Technology,
+43,252306226-7,Kohlrabi,"€88,97",Shoes,quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a,n/a,Energy,Health Care
+44,388584542-3,Whmis Spray Bottle Graduated,"€115,29",Computers,vel augue vestibulum ante,Basic Industries,Public Utilities,Finance
+45,041032903-7,"Pork - Loin, Bone - In","€46,38",Electronics,nibh in quis justo,Technology,Finance,
+46,593802109-X,Ice Cream Bar - Rolo Cone,"€125,19",Automotive,odio odio elementum eu interdum eu tincidunt in leo maecenas,n/a,Health Care,n/a
+47,399594577-5,Lamb - Bones,"€76,55",Home,vel lectus in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit,Finance,,Basic Industries
+48,498916510-1,Dc - Frozen Momji,"€26,41",Garden,est donec odio justo sollicitudin ut,Finance,n/a,Health Care
+49,793447955-7,Trueblue - Blueberry 12x473ml,"€122,98",Movies,nunc vestibulum ante ipsum primis in faucibus orci luctus,Miscellaneous,Consumer Services,Finance
+50,856999286-6,"Arctic Char - Fresh, Whole","€63,63",Sports,suscipit nulla elit ac nulla sed vel enim sit amet nunc viverra dapibus nulla,Technology,Consumer Non-Durables,Capital Goods
+51,142526658-4,Longos - Grilled Veg Sandwiches,"€108,04",Sports,diam erat fermentum justo nec,Consumer Services,Finance,
+52,610589083-4,"Crab - Claws, Snow 16 - 24","€87,62",Tools,lobortis convallis tortor risus dapibus,n/a,Energy,
+53,925498809-X,Pepper - Jalapeno,"€96,76",Toys,ante ipsum primis in,Health Care,Technology,n/a
+54,463401868-3,Mayonnaise - Individual Pkg,"€55,33",Automotive,nulla tellus in sagittis dui vel nisl,Health Care,Finance,Health Care
+55,947959994-5,Wine - Spumante Bambino White,"€13,27",Tools,ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent,Public Utilities,n/a,Miscellaneous
+56,336193771-X,Soup - Campbells Pasta Fagioli,"€107,05",Music,quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis,Finance,Health Care,n/a
+57,648966221-3,Fudge - Cream Fudge,"€94,42",Toys,dui proin leo odio porttitor,Finance,n/a,Technology
+58,316333252-8,Sping Loaded Cup Dispenser,"€23,93",Electronics,tempus sit amet sem fusce consequat nulla,n/a,Finance,n/a
+59,456232939-4,Mortadella,"€78,22",Shoes,sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend,Technology,,n/a
+60,972037756-9,Instant Coffee,"€25,93",Jewelry,amet nunc viverra dapibus nulla suscipit ligula in lacus,Energy,Finance,
+61,480243955-5,"Cookies - Oreo, 4 Pack","€64,92",Home,id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie,Capital Goods,Health Care,n/a
+62,876101386-2,"Pork - Tenderloin, Frozen","€38,83",Beauty,nulla tempus vivamus in felis eu sapien,Health Care,Consumer Services,Energy
+63,971018570-5,Wine - Sicilia Igt Nero Avola,"€112,49",Books,vestibulum ac est lacinia nisi venenatis tristique fusce congue,n/a,n/a,Health Care
+64,699266560-X,Garbage Bag - Clear,"€136,44",Books,turpis integer aliquet massa id lobortis convallis tortor,Finance,n/a,Consumer Services
+65,899333321-1,"Beans - Kidney, Canned","€55,84",Jewelry,ac est lacinia nisi venenatis tristique fusce congue diam id ornare,Health Care,Finance,Basic Industries
+66,698838610-6,Tequila - Sauza Silver,"€79,67",Toys,in congue etiam justo etiam pretium iaculis justo in hac,Finance,Consumer Services,Health Care
+67,399325631-X,Figs,"€65,53",Electronics,praesent id massa id,Public Utilities,Technology,Finance
+68,943390660-8,"Tomatoes - Cherry, Yellow","€11,35",Books,elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis,Technology,Finance,Miscellaneous
+69,610685298-7,Shrimp - Black Tiger 13/15,"€31,14",Games,sit amet consectetuer adipiscing elit proin risus praesent,n/a,Consumer Durables,Consumer Services
+70,213798853-4,Wine - Stoneliegh Sauvignon,"€54,95",Tools,lacus at turpis donec posuere metus vitae,Public Utilities,Finance,
+71,604455960-2,Trueblue - Blueberry 12x473ml,"€145,50",Health,morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed,Basic Industries,Capital Goods,Consumer Services
+72,063834215-5,Buffalo - Tenderloin,"€85,29",Baby,vehicula condimentum curabitur in libero ut massa volutpat convallis morbi odio odio elementum,Consumer Services,Capital Goods,
+73,381342433-2,Wine - Sawmill Creek Autumn,"€65,72",Music,sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl,Consumer Non-Durables,Consumer Services,
+74,380615692-1,Milk - Chocolate 500ml,"€95,88",Garden,rhoncus mauris enim leo rhoncus sed vestibulum sit amet cursus id turpis integer aliquet,n/a,Energy,Consumer Services
+75,912732426-5,Chicken Thigh - Bone Out,"€68,75",Kids,posuere cubilia curae nulla,Transportation,n/a,Energy
+76,836339778-4,Breadfruit,"€141,78",Electronics,tempus vel pede morbi porttitor lorem id,n/a,n/a,Consumer Services
+77,236637988-9,Goulash Seasoning,"€44,64",Jewelry,nulla ultrices aliquet maecenas leo odio condimentum id luctus nec,Finance,Public Utilities,Transportation
+78,216137037-5,"Nut - Pecan, Halves","€50,79",Books,,,n/a,n/a
+79,392169078-1,Lettuce - Boston Bib,"€76,23",Jewelry,et commodo vulputate justo,Consumer Non-Durables,,Finance
+80,198227921-4,Chicken - Base,"€63,92",Baby,amet erat nulla tempus vivamus in felis eu,Finance,Technology,
+81,928318400-9,Syrup - Monin - Passion Fruit,"€64,60",Clothing,luctus et ultrices posuere cubilia curae duis faucibus accumsan odio,n/a,Health Care,n/a
+82,252459521-8,Beer - Camerons Auburn,"€64,35",Clothing,consequat metus sapien ut nunc,Finance,n/a,Consumer Services
+83,289890804-5,Towel - Roll White,"€56,06",Jewelry,risus dapibus augue vel accumsan tellus nisi eu orci mauris lacinia sapien quis libero nullam,Finance,Finance,Consumer Services
+84,894855798-X,Chocolate Bar - Reese Pieces,"€121,09",Kids,nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi,n/a,Finance,
+85,469048361-2,Syrup - Monin - Blue Curacao,"€28,55",Beauty,vestibulum sit amet cursus id turpis integer aliquet massa id,n/a,n/a,n/a
+86,745613497-9,Pears - Anjou,"€136,00",Electronics,justo etiam pretium iaculis justo in hac habitasse platea dictumst,n/a,Health Care,Basic Industries
+87,228786723-6,Lettuce - Frisee,"€110,38",Kids,purus sit amet nulla,n/a,Health Care,Health Care
+88,569447434-1,"Wine - Magnotta - Red, Baco","€147,19",Health,et magnis dis parturient montes,Finance,Basic Industries,n/a
+89,984493986-0,Brandy Apricot,"€100,52",Clothing,ut ultrices vel augue vestibulum,Consumer Services,Consumer Services,
+90,545218612-3,Gherkin,"€81,83",Garden,augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id,Consumer Services,Finance,Consumer Durables
+91,472740549-0,Muffin Hinge 117n,"€124,70",Beauty,donec ut mauris eget massa tempor convallis nulla neque libero convallis eget,Finance,Health Care,Consumer Durables
+92,221733954-0,Flour - Chickpea,"€69,17",Games,penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis,Capital Goods,Health Care,
+93,994559559-8,Chinese Foods - Chicken,"€45,15",Automotive,aliquet massa id lobortis convallis tortor risus dapibus augue,Technology,,Technology
+94,730810700-0,"Cheese - Manchego, Spanish","€88,67",Grocery,morbi porttitor lorem id ligula suspendisse ornare consequat lectus,Capital Goods,Basic Industries,Technology
+95,902826974-6,"Plate - Foam, Bread And Butter","€123,82",Kids,luctus et ultrices posuere cubilia curae,Finance,n/a,n/a
+96,339945683-2,Numi - Assorted Teas,"€10,89",Home,eu orci mauris lacinia sapien,Finance,n/a,Technology
+97,873813688-0,Pepper - Green,"€141,61",Electronics,est et tempus semper est quam pharetra magna ac consequat metus sapien,Transportation,Consumer Services,Basic Industries
+98,650075738-6,"Chicken - Base, Ultimate","€62,95",Clothing,vulputate ut ultrices vel augue vestibulum ante,Capital Goods,,Finance
+99,476859094-2,Mushroom - White Button,"€78,56",Toys,,,Technology,Consumer Services
+100,253480813-3,"Seedlings - Buckwheat, Organic","€38,26",Grocery,iaculis diam erat fermentum justo nec condimentum,Basic Industries,Consumer Non-Durables,Finance
+101,300678996-2,Soup - Boston Clam Chowder,"€74,41",Jewelry,,,Consumer Services,n/a
+102,445998924-7,Coffee - French Vanilla Frothy,"€124,95",Electronics,lobortis ligula sit amet eleifend pede libero quis orci nullam molestie nibh in,Capital Goods,n/a,
+103,727424298-9,"Beans - Navy, Dry","€131,09",Baby,semper rutrum nulla nunc purus,Technology,Consumer Non-Durables,n/a
+104,551171597-2,"Nut - Almond, Blanched, Sliced","€42,19",Beauty,consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et,Public Utilities,Energy,n/a
+105,652045388-9,Sauce - Chili,"€80,01",Beauty,pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras,Energy,n/a,
+106,452165328-6,Soup Knorr Chili With Beans,"€59,70",Health,ornare consequat lectus in est risus auctor sed tristique in tempus sit amet,Technology,n/a,
+107,184461817-X,Yams,"€121,91",Tools,elementum pellentesque quisque porta,Finance,Finance,
+108,377608354-9,Tart - Pecan Butter Squares,"€17,56",Shoes,leo maecenas pulvinar lobortis est phasellus sit amet erat nulla tempus,Technology,Health Care,Health Care
+109,757207970-9,Wine - Alsace Gewurztraminer,"€25,08",Grocery,nunc commodo placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt,Health Care,n/a,n/a
+110,870175301-0,"Trout - Rainbow, Frozen","€12,72",Automotive,praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget tempus,Consumer Services,,Health Care
+111,846627217-8,Garlic - Elephant,"€118,55",Movies,,,n/a,Energy
+112,302986110-4,Pail With Metal Handle 16l White,"€146,24",Books,tortor id nulla ultrices aliquet maecenas,n/a,n/a,n/a
+113,282613992-4,Bok Choy - Baby,"€74,83",Garden,sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc nisl duis,n/a,Capital Goods,Consumer Non-Durables
+114,608717166-5,"Bread - Roll, Canadian Dinner","€29,61",Garden,integer ac leo pellentesque ultrices mattis odio donec vitae,Basic Industries,Finance,Consumer Services
+115,344778584-5,Pastry - Lemon Danish - Mini,"€48,71",Toys,sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et,Finance,Consumer Services,n/a
+116,565139927-5,Numi - Assorted Teas,"€16,18",Health,dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien,Capital Goods,Technology,Consumer Non-Durables
+117,449481027-4,"Beef - Roasted, Cooked","€21,66",Computers,aenean lectus pellentesque eget nunc donec quis orci eget orci,Basic Industries,Health Care,Finance
+118,364988567-0,Beets - Golden,"€112,05",Automotive,,,n/a,Finance
+119,642248387-2,"Cheese - Havarti, Salsa","€113,87",Shoes,convallis nulla neque libero convallis eget eleifend luctus ultricies,Finance,Energy,Consumer Services
+120,306520512-2,Limes,"€70,71",Computers,leo odio condimentum id luctus,Technology,Capital Goods,Consumer Services
+121,314541390-2,Caviar - Salmon,"€13,92",Shoes,eros vestibulum ac est lacinia nisi venenatis tristique,Consumer Services,Consumer Durables,Consumer Services
+122,228879274-4,Wine - Placido Pinot Grigo,"€99,91",Tools,ornare imperdiet sapien urna pretium nisl,Technology,Finance,Consumer Non-Durables
+123,426175072-4,Chervil - Fresh,"€18,22",Books,non lectus aliquam sit amet diam,n/a,,Public Utilities
+124,191447456-2,Chinese Foods - Thick Noodles,"€69,04",Sports,ultrices posuere cubilia curae nulla dapibus dolor vel est donec,Miscellaneous,,Consumer Services
+125,039477947-9,Wine - Acient Coast Caberne,"€121,35",Music,rutrum neque aenean auctor gravida sem praesent id,Capital Goods,Finance,
+126,827732098-1,Monkfish - Fresh,"€31,54",Beauty,turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel accumsan tellus nisi,Finance,Health Care,
+127,476076331-7,Radish,"€71,46",Music,velit vivamus vel nulla eget eros,n/a,Health Care,Finance
+128,268861585-8,Versatainer Nc - 888,"€41,78",Movies,sit amet justo morbi,Energy,Consumer Services,n/a
+129,022029812-2,"Wine - Red, Cabernet Sauvignon","€62,53",Health,morbi vestibulum velit id pretium iaculis,Finance,Health Care,Basic Industries
+130,032046767-8,Sauce - Chili,"€69,18",Industrial,cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus,Consumer Services,Consumer Services,Capital Goods
+131,993111767-2,Taro Leaves,"€58,53",Beauty,hac habitasse platea dictumst etiam faucibus cursus urna ut tellus,Public Utilities,,n/a
+132,938575581-1,"Split Peas - Green, Dry","€47,60",Tools,mattis nibh ligula nec,Transportation,Capital Goods,Basic Industries
+133,349826489-3,Ice Cream Bar - Hagen Daz,"€77,38",Beauty,,,Consumer Services,Public Utilities
+134,689338636-2,Wine - Trimbach Pinot Blanc,"€108,30",Books,curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec,Health Care,Health Care,Finance
+135,933808183-4,Black Currants,"€97,19",Grocery,suspendisse ornare consequat lectus in est risus auctor sed tristique,Technology,Consumer Services,Consumer Durables
+136,215105986-3,Rabbit - Whole,"€97,41",Shoes,felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis,Health Care,n/a,Miscellaneous
+137,612174312-3,Puree - Strawberry,"€42,78",Health,vitae nisl aenean lectus pellentesque eget nunc donec quis orci eget,Capital Goods,Basic Industries,Technology
+138,868875615-5,Beef - Top Sirloin - Aaa,"€141,51",Automotive,luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse,n/a,Consumer Services,
+139,854740124-5,"Crab - Dungeness, Whole","€57,15",Kids,eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in,n/a,n/a,Consumer Non-Durables
+140,225511089-X,"Pasta - Rotini, Dry","€23,81",Garden,phasellus sit amet erat nulla tempus,Energy,Finance,
+141,119325749-2,Bar Mix - Lime,"€116,36",Automotive,est phasellus sit amet erat nulla tempus vivamus in felis,Technology,Finance,Finance
+142,454189431-9,Dill Weed - Fresh,"€17,50",Industrial,nibh fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti,n/a,Basic Industries,n/a
+143,947319584-2,Honey - Liquid,"€68,10",Shoes,diam erat fermentum justo nec condimentum neque sapien placerat ante,Consumer Services,Finance,
+144,958280660-5,"Sauce - Bernaise, Mix","€15,55",Garden,erat volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea,n/a,Consumer Services,
+145,860225304-4,Oxtail - Cut,"€148,39",Music,maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur,Technology,Technology,
+146,364413557-6,Bouq All Italian - Primerba,"€32,69",Jewelry,ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at,Public Utilities,Consumer Services,n/a
+147,777791406-5,Tea - Orange Pekoe,"€145,55",Music,ac neque duis bibendum morbi non quam nec,Capital Goods,Basic Industries,Basic Industries
+148,590615397-7,Coffee - 10oz Cup 92961,"€120,79",Movies,quisque ut erat curabitur gravida nisi at nibh in hac habitasse,Public Utilities,n/a,Health Care
+149,186243094-2,Squid Ink,"€63,30",Jewelry,ac est lacinia nisi,n/a,Health Care,Finance
+150,841078596-X,"Vermacelli - Sprinkles, Assorted","€65,40",Beauty,vitae mattis nibh ligula nec sem duis aliquam convallis,n/a,Consumer Services,
+151,281602309-5,Apple - Fuji,"€88,85",Beauty,risus auctor sed tristique in tempus sit amet sem,Consumer Durables,Capital Goods,Consumer Services
+152,475527865-1,Wiberg Cure,"€138,99",Industrial,nonummy maecenas tincidunt lacus at velit vivamus,n/a,Public Utilities,Health Care
+153,847344068-4,Sausage - Meat,"€64,75",Music,non quam nec dui luctus rutrum nulla tellus in sagittis dui,Technology,Technology,
+154,504958054-4,Pur Value,"€79,86",Grocery,,,Consumer Services,Finance
+155,724491823-2,Lamb - Whole Head Off,"€105,65",Beauty,in hac habitasse platea dictumst aliquam,Consumer Services,Technology,
+156,271176650-0,Pear - Asian,"€68,29",Home,vitae mattis nibh ligula nec,Public Utilities,Consumer Non-Durables,Consumer Services
+157,934985885-1,Vinegar - Champagne,"€10,72",Sports,tellus in sagittis dui vel nisl,Capital Goods,n/a,Finance
+158,,Wine - Chianti Classica Docg,,Beauty,augue vestibulum ante ipsum primis in faucibus orci luctus et,n/a,,
+159,753751448-8,"Asparagus - White, Canned","€24,32",Jewelry,,,Consumer Services,Finance
+160,445219336-6,"Pasta - Shells, Medium, Dry","€34,71",Games,nunc donec quis orci eget orci vehicula condimentum curabitur in,Capital Goods,Health Care,Health Care
+161,546643156-7,Mix - Cocktail Ice Cream,"€130,25",Grocery,donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a,Technology,n/a,
+162,855940225-X,Soup V8 Roasted Red Pepper,"€98,57",Movies,suscipit a feugiat et eros vestibulum,Consumer Services,Consumer Services,Public Utilities
+163,073334440-2,"Bread - Pita, Mini","€149,50",Music,interdum venenatis turpis enim blandit mi,Capital Goods,Miscellaneous,Technology
+164,957978308-X,Cakes Assorted,"€140,08",Industrial,magna vulputate luctus cum sociis natoque penatibus et magnis dis parturient,Public Utilities,Finance,Technology
+165,059977190-9,Cheese - Valancey,"€93,30",Beauty,aenean lectus pellentesque eget nunc donec quis orci eget orci vehicula condimentum curabitur in libero,Technology,Consumer Services,
+166,535867140-4,Muffin Mix - Chocolate Chip,"€13,98",Automotive,luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam,Technology,n/a,Health Care
+167,815867692-8,"Bread - Rolls, Rye","€29,06",Kids,id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi,n/a,Energy,Health Care
+168,100704635-X,Juice - Propel Sport,"€71,88",Automotive,pellentesque ultrices mattis odio,Public Utilities,Miscellaneous,Energy
+169,149303050-7,Anchovy Fillets,"€43,68",Grocery,,,Consumer Services,n/a
+170,435388783-1,"Lobster - Tail, 3 - 4 Oz","€73,63",Electronics,quam fringilla rhoncus mauris enim leo rhoncus sed,Health Care,,
+171,392996686-7,Port - 74 Brights,"€14,45",Beauty,morbi ut odio cras,Consumer Services,Capital Goods,Consumer Services
+172,810373402-0,"Pork - Loin, Center Cut","€85,52",Outdoors,curae donec pharetra magna vestibulum aliquet ultrices erat,n/a,Consumer Services,n/a
+173,883296226-8,Scallops - In Shell,"€114,75",Health,lectus vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante ipsum primis,Health Care,Finance,Health Care
+174,003724923-1,"Chilli Paste, Ginger Garlic","€118,69",Books,ut suscipit a feugiat et eros vestibulum ac est lacinia nisi,Consumer Non-Durables,Finance,Health Care
+175,983885616-9,Cookies Oatmeal Raisin,"€13,30",Books,potenti in eleifend quam a,n/a,Health Care,Consumer Services
+176,537609607-6,"Red Snapper - Fresh, Whole","€127,18",Garden,eget congue eget semper rutrum,n/a,Energy,
+177,510044405-3,"Soup - Knorr, Country Bean","€65,27",Garden,,,,Health Care
+178,894128358-2,"Tomatoes - Vine Ripe, Yellow","€135,01",Movies,ligula nec sem duis aliquam convallis nunc proin at turpis a,Consumer Services,Consumer Non-Durables,Health Care
+179,719250761-X,Bread Fig And Almond,"€14,54",Home,tellus nisi eu orci mauris lacinia sapien quis libero nullam sit,Consumer Durables,Health Care,Finance
+180,586434265-3,Nut - Pumpkin Seeds,"€92,71",Grocery,nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in,Finance,n/a,Finance
+181,852342584-5,Calypso - Black Cherry Lemonade,"€116,70",Sports,nulla tellus in sagittis dui vel,Finance,Capital Goods,Consumer Services
+182,468278764-0,Wine - Zonnebloem Pinotage,"€82,88",Kids,odio justo sollicitudin ut suscipit a feugiat et eros,n/a,Technology,Health Care
+183,736463209-3,Tea - Herbal - 6 Asst,"€131,88",Sports,fermentum donec ut mauris,n/a,n/a,Public Utilities
+184,,Beef - Ground Medium,,Baby,sit amet nunc viverra dapibus nulla suscipit ligula in lacus,Public Utilities,Transportation,
+185,271034759-8,Muffin Hinge 117n,"€10,83",Computers,sagittis dui vel nisl duis ac nibh fusce lacus,Energy,n/a,Capital Goods
+186,017544891-4,Nestea - Iced Tea,"€83,89",Automotive,diam erat fermentum justo nec condimentum neque sapien placerat ante,Finance,Health Care,Technology
+187,000965002-4,Cream Of Tartar,"€120,61",Shoes,in hac habitasse platea dictumst,Consumer Services,Miscellaneous,Public Utilities
+188,739237859-7,Chocolate - Compound Coating,"€25,55",Beauty,nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer,Consumer Services,Basic Industries,Consumer Services
+189,693587337-1,Wine - Barossa Valley Estate,"€82,79",Kids,faucibus orci luctus et ultrices posuere cubilia curae,n/a,,Finance
+190,547648380-2,"Basil - Dry, Rubbed","€115,99",Grocery,morbi non quam nec dui luctus rutrum nulla tellus in sagittis,n/a,n/a,n/a
+191,360247690-1,Coffee - French Vanilla Frothy,"€64,48",Sports,lorem vitae mattis nibh ligula nec,Basic Industries,Capital Goods,n/a
+192,262012228-7,"Pepper - Julienne, Frozen","€60,27",Health,ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit,Transportation,Public Utilities,Basic Industries
+193,230975194-4,Nantucket - Kiwi Berry Cktl.,"€25,70",Clothing,cubilia curae mauris viverra diam vitae quam suspendisse,Technology,Miscellaneous,Finance
+194,128837748-7,Lemon Tarts,"€50,26",Jewelry,mauris lacinia sapien quis libero nullam sit amet,Capital Goods,Capital Goods,Technology
+195,956825294-0,Pork Casing,"€148,75",Home,suspendisse potenti nullam porttitor lacus at turpis,Basic Industries,n/a,
+196,974439665-2,Wine - Spumante Bambino White,"€76,32",Home,viverra pede ac diam cras pellentesque volutpat,Consumer Services,Capital Goods,
+197,031309216-8,Table Cloth 54x72 White,"€129,70",Books,malesuada in imperdiet et commodo vulputate justo in blandit ultrices,Basic Industries,Health Care,Energy
+198,608354122-0,Aromat Spice / Seasoning,"€76,38",Jewelry,congue vivamus metus arcu,Basic Industries,Technology,Health Care
+199,966671914-2,Sambuca - Ramazzotti,"€130,14",Automotive,vehicula consequat morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam,Finance,Technology,Transportation
+200,426421583-8,"Star Anise, Whole","€120,30",Home,justo sit amet sapien dignissim vestibulum,Finance,Consumer Services,Public Utilities

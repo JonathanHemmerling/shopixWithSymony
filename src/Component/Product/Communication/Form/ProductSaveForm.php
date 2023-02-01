@@ -2,8 +2,6 @@
 
 namespace App\Component\Product\Communication\Form;
 
-use App\DTO\ProductsDataTransferObject;
-use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,7 +27,7 @@ class ProductSaveForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => ProductDataTransferObject::class,
             'csrf_protection' => false,
             'csrf_field_name' => '_token',
             'csrf_token_id'   => 'task_item',

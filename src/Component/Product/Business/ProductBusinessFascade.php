@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Component\Product\Business;
 
 use App\Component\Product\Persistence\ProductEntityManager;
-use App\DTO\ProductsDataTransferObject;
+use App\DTO\ProductDataTransferObject;
+use App\Entity\Product;
 
 class ProductBusinessFascade
 {
@@ -13,14 +14,14 @@ class ProductBusinessFascade
     {
     }
 
-    public function create(ProductsDataTransferObject $dataTransferObject):void
+    public function create(ProductDataTransferObject $dataTransferObject):void
     {
         $this->entityManager->create($dataTransferObject);
     }
 
-    public function save(ProductsDataTransferObject $dataTransferObject):void
+    public function save(Product $product, ProductDataTransferObject $dataTransferObject):void
     {
-        $this->entityManager->save($dataTransferObject);
+        $this->entityManager->save($product, $dataTransferObject);
     }
 
 //save Product-> call entitymanager and save-> mit DTO-> DTO Übergeben an FORM

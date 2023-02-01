@@ -2,7 +2,7 @@
 
 namespace App\Component\Product\Persistence;
 
-use App\DTO\ProductsDataTransferObject;
+use App\DTO\ProductDataTransferObject;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
  * @method Product|null findOneBy(array $criteria, array $orderBy = null)
  * @method Product[]    findAll()
- * @method ProductsDataTransferObject[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ProductDataTransferObject[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ProductRepository extends ServiceEntityRepository
 {

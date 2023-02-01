@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Persistence;
 
-use App\DTO\ProductsDataTransferObject;
+use App\DTO\ProductDataTransferObject;
 use App\Entity\Product;
 use App\Entity\User;
-use App\Model\Mapper\ProductsMapper;
-use App\Repository\UserRepository;
+use App\Component\User\Persistence\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -16,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class ProductEntityManagerTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
+    private ProductRepository $productRepository;
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,12 +26,7 @@ class ProductEntityManagerTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $this->createProductData();
-        $this->createUserData();
         $this->productRepository = $this->client->getContainer()->get(ProductRepository::class);
-        $userRepository = $this->client->getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('admin@test.de');
-
-        $this->client->loginUser($testUser);
     }
 
     protected function tearDown(): void
@@ -45,26 +40,36 @@ class ProductEntityManagerTest extends WebTestCase
 
     public function testProductCreate(): void
     {
-        $productDto = new ProductsDataTransferObject(null, 1, 'test', 'test', 'test','test');
+        $productDto = new ProductDataTransferObject();
+        $productDto->mainId = 1;
+        $productDto->productName = 'test';
+        $productDto->displayName = 'test';
+        $productDto->description = 'test';
+        $productDto->price = '1';
         $productEntityManager = new ProductEntityManager($this->entityManager);
         $productEntityManager->create($productDto);
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'test']);
-        $this->assertNotNull($product);
+        $product = $this->productRepository->findOneBy(['productName' => 'test']);
+        $this->assertSame('test', $product->getProductName());
+        $this->assertSame('1', $product->getPrice());
     }
 
     public function testProductSave():void
     {
-        $product = $this->client->getContainer()->get(ProductRepository::class)->findBy(['id' => 1]);
-        $productMapper = new ProductsMapper();
-        $productDto = $productMapper->mapToProductsDto($product[0]);
-        $newDTO = new ProductsDataTransferObject($productDto->productId, $productDto->mainId, $productDto->displayName, 'jeans6', $productDto->description, $productDto->price);
+        $product = $this->productRepository->findBy(['id' => 1]);
+        $newDTO = new ProductDataTransferObject();
+        $newDTO->mainId = $product[0]->getMainId();
+        $newDTO->productName = $product[0]->getProductName();
+        $newDTO->displayName = 'test';
+        $newDTO->description = 'test';
+        $newDTO->price = '1';
+
         $productEntityManager = new ProductEntityManager($this->entityManager);
-        $productEntityManager->save($newDTO);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'jeans6']);
-        self::assertNotNull($product);
+        $productEntityManager->save($product[0], $newDTO);
+
+        $product = $this->productRepository->findOneBy(['id' => 1]);
+        self::assertSame('jeans1', $product->getProductName());
+        self::assertSame('test', $product->getDisplayName());
     }
 
 
@@ -96,32 +101,6 @@ class ProductEntityManagerTest extends WebTestCase
             $product->setDescription($productData['description']);
             $product->setPrice($productData['price']);
             $this->entityManager->persist($product);
-        }
-        $this->entityManager->flush();
-    }
-
-    private function createUserData()
-    {
-        $data = [
-            [
-                'email' => 'admin@test.de',
-                'role' => 'ROLE_ADMIN',
-                'password' => 'password',
-            ],
-            [
-                'email' => 'test2@test.de',
-                'role' => 'ROLE_USER',
-                'password' => 'password',
-            ],
-        ];
-
-        foreach ($data as $userData) {
-            $user = new User();
-
-            $user->setEmail($userData['email']);
-            $user->setPassword($userData['password']);
-            $user->setRoles([$userData['role']]);
-            $this->entityManager->persist($user);
         }
         $this->entityManager->flush();
     }

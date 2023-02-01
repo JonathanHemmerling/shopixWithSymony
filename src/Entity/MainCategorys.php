@@ -17,9 +17,6 @@ class MainCategorys
     #[ORM\Column(length: 255)]
     private ?string $mainCategoryName = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $displayName = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -37,15 +34,4 @@ class MainCategorys
         return $this;
     }
 
-    public function getDisplayName(): ?string
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName(string $displayName): self
-    {
-        $this->displayName = $displayName;
-
-        return $this;
-    }
 }

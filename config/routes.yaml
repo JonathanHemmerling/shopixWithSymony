@@ -1,12 +1,20 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/
+
+        namespace: App\
     type: attribute
 logout:
     path: /logout
+
 controllers_product:
     resource:
         path: ../src/Component/Product/Communication/
         namespace: App\Component\Product\Communication
     type: attribute
+
+controllers_user:
+     resource:
+        path: ../src/Component/User/Communication/
+        namespace: App\Component\User\Communication
+     type: attribute

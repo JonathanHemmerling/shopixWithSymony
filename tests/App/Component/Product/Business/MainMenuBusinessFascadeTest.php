@@ -6,22 +6,19 @@ namespace App\Component\Product\Business;
 
 use App\Component\Product\Persistence\MainCategorysRepository;
 use App\Component\Product\Persistence\MainMenuEntityManager;
-use App\Component\Product\Persistence\ProductEntityManager;
-use App\Component\Product\Persistence\ProductRepository;
+use App\Component\User\Persistence\Repository\UserRepository;
 use App\DTO\MainMenuDataTransferObject;
-use App\DTO\ProductsDataTransferObject;
 use App\Entity\MainCategorys;
-use App\Entity\Product;
 use App\Entity\User;
-use App\Model\Mapper\MainMenuMapper;
-use App\Model\Mapper\ProductsMapper;
-use App\Repository\UserRepository;
+
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MainMenuBusinessFascadeTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
+    private MainCategorysRepository $mainCategorysRepository;
+    private MainMenuBusinessFascade $fascade;
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,12 +29,9 @@ class MainMenuBusinessFascadeTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $this->createMainMenuData();
-        $this->createUserData();
-        $this->productRepository = $this->client->getContainer()->get(MainCategorysRepository::class);
-        $userRepository = $this->client->getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('admin@test.de');
+        $this->mainCategorysRepository = $this->client->getContainer()->get(MainCategorysRepository::class);
+        $this->fascade = new MainMenuBusinessFascade(new MainMenuEntityManager($this->entityManager));
 
-        $this->client->loginUser($testUser);
     }
 
     protected function tearDown(): void
@@ -51,26 +45,31 @@ class MainMenuBusinessFascadeTest extends WebTestCase
 
     public function testProductCreate(): void
     {
-        $mainMenuDto = new MainMenuDataTransferObject(null, 'test', 'test');
-        $fascade = new MainMenuBusinessFascade(new MainMenuEntityManager($this->entityManager));
-        $fascade->create($mainMenuDto);
+        $mainMenuDto = new MainMenuDataTransferObject();
+        $mainMenuDto->mainCategoryName = 'test3';
+        $mainMenuDto->displayName = 'test 3';
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'test']);
-        $this->assertNotNull($mainCategory);
+        $this->fascade->create($mainMenuDto);
+
+        $product = $this->mainCategorysRepository->findOneBy(['id' => 3]);
+        self::assertSame('test3', $product->getMainCategoryName());
+        self::assertSame('test 3', $product->getDisplayName());
     }
 
-    public function testProductSave():void
+    public function testMainMenuSave():void
     {
-        $mainCategory = $this->client->getContainer()->get(MainCategorysRepository::class)->findBy(['id' => 1]);
-        $mainCategoryMapper = new MainMenuMapper();
-        $mainCategoryDto = $mainCategoryMapper->mapToMainDto($mainCategory[0]);
-        $newDTO = new MainMenuDataTransferObject($mainCategoryDto->mainId, $mainCategoryDto->mainCategoryName, $mainCategoryDto->displayName);
+        $mainCategory = $this->client->getContainer()->get(MainCategorysRepository::class)->findOneBy(['id' => 1]);
+        $newDTO = new MainMenuDataTransferObject();
+        $newDTO->mainCategoryName = $mainCategory->getMainCategoryName();
+        $newDTO->displayName = 'test one';
+
         $fascade = new MainMenuBusinessFascade(new MainMenuEntityManager($this->entityManager));
-        $fascade->save($newDTO);
+        $fascade->save($mainCategory, $newDTO);
+
         $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'test1']);
-        self::assertNotNull($mainCategory);
+        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['id' => 1]);
+        self::assertSame('test1', $mainCategory->getMainCategoryName());
+        self::assertSame('test one', $mainCategory->getDisplayName());
     }
 
     private function createMainMenuData(): void
@@ -92,32 +91,6 @@ class MainMenuBusinessFascadeTest extends WebTestCase
             $mainCategory->setMainCategoryName($mainMenuData['mainCategoryName']);
             $mainCategory->setDisplayName($mainMenuData['displayName']);
             $this->entityManager->persist($mainCategory);
-        }
-        $this->entityManager->flush();
-    }
-
-    private function createUserData()
-    {
-        $data = [
-            [
-                'email' => 'admin@test.de',
-                'role' => 'ROLE_ADMIN',
-                'password' => 'password',
-            ],
-            [
-                'email' => 'test2@test.de',
-                'role' => 'ROLE_USER',
-                'password' => 'password',
-            ],
-        ];
-
-        foreach ($data as $userData) {
-            $user = new User();
-
-            $user->setEmail($userData['email']);
-            $user->setPassword($userData['password']);
-            $user->setRoles([$userData['role']]);
-            $this->entityManager->persist($user);
         }
         $this->entityManager->flush();
     }

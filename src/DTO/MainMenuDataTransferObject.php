@@ -6,10 +6,11 @@ namespace App\DTO;
 
 class MainMenuDataTransferObject
 {
-    public function __construct(
-        public readonly int|null $mainId,
-        public readonly string $mainCategoryName,
-        public readonly string $displayName,
-    ) {
+    public int|null $mainId = null;
+    public string $mainCategoryName = '';
+    public string $displayName = '';
+
+    public function __construct()
+    {
     }
 }

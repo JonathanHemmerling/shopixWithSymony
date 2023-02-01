@@ -6,17 +6,17 @@ namespace App\Component\Product\Business;
 
 use App\Component\Product\Persistence\ProductEntityManager;
 use App\Component\Product\Persistence\ProductRepository;
-use App\DTO\ProductsDataTransferObject;
+use App\DTO\ProductDataTransferObject;
 use App\Entity\Product;
-use App\Entity\User;
-use App\Model\Mapper\ProductsMapper;
-use App\Repository\UserRepository;
+
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProductBusinessFascadeTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
+    private ProductRepository $productRepository;
+    private ProductBusinessFascade $fascade;
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,46 +27,50 @@ class ProductBusinessFascadeTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $this->createProductData();
-        $this->createUserData();
         $this->productRepository = $this->client->getContainer()->get(ProductRepository::class);
-        $userRepository = $this->client->getContainer()->get(UserRepository::class);
-        $testUser = $userRepository->findOneByEmail('admin@test.de');
+        $this->fascade = new ProductBusinessFascade(new ProductEntityManager($this->entityManager));
 
-        $this->client->loginUser($testUser);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE user');
         $connection->query('TRUNCATE product');
         $this->entityManager = null;
     }
 
     public function testProductCreate(): void
     {
-        $productDto = new ProductsDataTransferObject(null, 1, 'test', 'test', 'test','test');
-        $fascade = new ProductBusinessFascade(new ProductEntityManager($this->entityManager));
+        $productDto = new ProductDataTransferObject();
+        $productDto->mainId = 1;
+        $productDto->productName = 'test';
+        $productDto->displayName = 'test';
+        $productDto->description = 'test';
+        $productDto->price = '1';
 
-        $fascade->create($productDto);
+        $this->fascade->create($productDto);
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'test']);
-        $this->assertNotNull($product);
+        $product = $this->productRepository->findOneBy(['productName' => 'test']);
+        self::assertSame('test', $product->getProductName());
+        self::assertSame('1', $product->getPrice());
     }
 
     public function testProductSave():void
     {
-        $product = $this->client->getContainer()->get(ProductRepository::class)->findBy(['id' => 1]);
-        $productMapper = new ProductsMapper();
-        $productDto = $productMapper->mapToProductsDto($product[0]);
-        $newDTO = new ProductsDataTransferObject($productDto->productId, $productDto->mainId, $productDto->displayName, 'jeans6', $productDto->description, $productDto->price);
-        $fascade = new ProductBusinessFascade(new ProductEntityManager($this->entityManager));
-        $fascade->save($newDTO);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'jeans6']);
-        self::assertNotNull($product);
+        $product = $this->productRepository->findOneBy(['id' => 1]);
+        $newDTO = new ProductDataTransferObject();
+        $newDTO->mainId = $product->getMainId();
+        $newDTO->productName = $product->getProductName();
+        $newDTO->displayName = 'test';
+        $newDTO->description = 'test';
+        $newDTO->price = '1';
+
+        $this->fascade->save($product, $newDTO);
+
+        $product = $this->productRepository->findOneBy(['id' => 1]);
+        self::assertSame('jeans1', $product->getProductName());
+        self::assertSame('test', $product->getDisplayName());
     }
 
 
@@ -98,32 +102,6 @@ class ProductBusinessFascadeTest extends WebTestCase
             $product->setDescription($productData['description']);
             $product->setPrice($productData['price']);
             $this->entityManager->persist($product);
-        }
-        $this->entityManager->flush();
-    }
-
-    private function createUserData()
-    {
-        $data = [
-            [
-                'email' => 'admin@test.de',
-                'role' => 'ROLE_ADMIN',
-                'password' => 'password',
-            ],
-            [
-                'email' => 'test2@test.de',
-                'role' => 'ROLE_USER',
-                'password' => 'password',
-            ],
-        ];
-
-        foreach ($data as $userData) {
-            $user = new User();
-
-            $user->setEmail($userData['email']);
-            $user->setPassword($userData['password']);
-            $user->setRoles([$userData['role']]);
-            $this->entityManager->persist($user);
         }
         $this->entityManager->flush();
     }

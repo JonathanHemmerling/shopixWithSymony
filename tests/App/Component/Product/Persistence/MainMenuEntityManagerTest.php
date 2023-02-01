@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Persistence;
 
+use App\Component\User\Persistence\Repository\UserRepository;
 use App\DTO\MainMenuDataTransferObject;
 use App\Entity\MainCategorys;
 use App\Entity\User;
-use App\Model\Mapper\MainMenuMapper;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -45,26 +44,33 @@ class MainMenuEntityManagerTest extends WebTestCase
 
     public function testProductCreate(): void
     {
-        $mainMenuDto = new MainMenuDataTransferObject(null,'test', 'test');
+        $mainMenuDto = new MainMenuDataTransferObject();
+        $mainMenuDto->mainCategoryName = 'test3';
+        $mainMenuDto->displayName = 'test 3';
         $mainMenuEntityManager = new MainMenuEntityManager($this->entityManager);
         $mainMenuEntityManager->create($mainMenuDto);
 
         $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'test']);
-        $this->assertNotNull($product);
+        $product = $em->getRepository(MainCategorys::class)->findOneBy(['id' => 3]);
+        self::assertSame('test3', $product->getMainCategoryName());
+        self::assertSame('test 3', $product->getDisplayName());
+
     }
 
     public function testProductSave():void
     {
         $mainCategory = $this->client->getContainer()->get(MainCategorysRepository::class)->findBy(['id' => 1]);
-        $productMapper = new MainMenuMapper();
-        $mainCategoryDto = $productMapper->mapToMainDto($mainCategory[0]);
-        $newDTO = new MainMenuDataTransferObject($mainCategoryDto->mainId, $mainCategoryDto->mainCategoryName, $mainCategoryDto->displayName);
+        $newDTO = new MainMenuDataTransferObject();
+        $newDTO->mainCategoryName = $mainCategory[0]->getMainCategoryName();
+        $newDTO->displayName = 'test one';
+
         $mainCategoryEntityManager = new MainMenuEntityManager($this->entityManager);
-        $mainCategoryEntityManager->save($newDTO);
+        $mainCategoryEntityManager->save($mainCategory[0], $newDTO);
+
         $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'test1']);
-        self::assertNotNull($mainCategory);
+        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['id' => '1']);
+        self::assertSame('test1', $mainCategory->getMainCategoryName());
+        self::assertSame('test one', $mainCategory->getDisplayName());
     }
 
 
