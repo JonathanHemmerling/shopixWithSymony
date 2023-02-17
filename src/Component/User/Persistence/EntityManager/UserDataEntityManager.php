@@ -6,9 +6,9 @@ use App\DTO\UserDataTransferObject;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserDataEntityManager
+readonly class UserDataEntityManager
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
 
     }

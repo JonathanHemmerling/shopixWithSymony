@@ -4,27 +4,21 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Business;
 
-use App\Component\Product\Persistence\ProductEntityManager;
-use App\DTO\ProductDataTransferObject;
-use App\Entity\Product;
+use App\Component\Product\Persistence\ProductsEntityManager;
+use App\DTO\ProductsDataTransferObject;
+use App\Entity\Products;
 
-class ProductBusinessFascade
+readonly class ProductBusinessFascade
 {
-    public function __construct(private readonly ProductEntityManager $entityManager)
+    public function __construct(private ProductsEntityManager $entityManager)
     {
     }
-
-    public function create(ProductDataTransferObject $dataTransferObject):void
+    public function create(ProductsDataTransferObject $productsDTO):void
     {
-        $this->entityManager->create($dataTransferObject);
+        $this->entityManager->create($productsDTO);
     }
-
-    public function save(Product $product, ProductDataTransferObject $dataTransferObject):void
+    public function save(Products $product, ProductsDataTransferObject $productsDTO):void
     {
-        $this->entityManager->save($product, $dataTransferObject);
+        $this->entityManager->save($product, $productsDTO);
     }
-
-//save Product-> call entitymanager and save-> mit DTO-> DTO Übergeben an FORM
-
-//Im Test von Entitymanager testen
 }

@@ -7,6 +7,7 @@ namespace App\Component\User\Communication\Controller;
 use App\Component\Product\Persistence\ProductRepository;
 use App\Component\User\Persistence\Repository\UserRepository;
 use App\Entity\User;
+use App\Repository\ProductsRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -24,7 +25,7 @@ class NotAllowedControllerTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $this->createUserData();
-        $this->productRepository = $this->client->getContainer()->get(ProductRepository::class);
+        $this->productRepository = $this->client->getContainer()->get(ProductsRepository::class);
     }
 
     protected function tearDown(): void

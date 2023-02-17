@@ -2,8 +2,7 @@
 
 namespace App\Entity;
 
-
-use App\Component\Product\Persistence\ProductsRepository;
+use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,18 +24,21 @@ class Products
     #[ORM\Column(nullable: true)]
     private ?int $price = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $category = null;
+    #[ORM\ManyToOne(targetEntity: Category::class, cascade: ['persist'], inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Attributes::class, cascade: ["persist"])]
-    private Collection $attr;
+    #[ORM\ManyToMany(targetEntity: Attributes::class, inversedBy: 'products', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'products_attributes')]
+    private Collection $attributes;
+
 
     public function __construct()
     {
-        $this->attr = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,12 +82,12 @@ class Products
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(string $category): self
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
@@ -107,30 +109,26 @@ class Products
     /**
      * @return Collection<int, Attributes>
      */
-    public function getAttr(): Collection
+    public function getAttribute(): Collection
     {
-        return $this->attr;
+        return $this->attributes;
     }
 
-    public function addAttr(Attributes $attr): self
+    public function addAttribute(Attributes $attributes): self
     {
-        if (!$this->attr->contains($attr)) {
-            $this->attr->add($attr);
-            $attr->setProducts($this);
+        if (!$this->attributes->contains($attributes)) {
+            $this->attributes->add($attributes);
         }
 
         return $this;
     }
 
-    public function removeAttr(Attributes $attr): self
+    public function removeAttribute(Attributes $attributes): self
     {
-        if ($this->attr->removeElement($attr)) {
-            // set the owning side to null (unless already changed)
-            if ($attr->getProducts() === $this) {
-                $attr->setProducts(null);
-            }
-        }
+        $this->attributes->removeElement($attributes);
 
         return $this;
     }
+
+
 }

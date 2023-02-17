@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Persistence;
 
-use App\Entity\MainCategorys;
+use App\Entity\Category;
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -30,8 +30,10 @@ class MainCategorysRepositoryTest extends WebTestCase
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->executeUpdate('DELETE FROM main_categorys');
-        $connection->executeUpdate('ALTER TABLE main_categorys AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM products');
+        $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM category');
+        $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
         $connection->executeUpdate('DELETE FROM user');
         $connection->executeUpdate('ALTER TABLE user AUTO_INCREMENT=0');
         $this->entityManager = null;
@@ -47,34 +49,28 @@ class MainCategorysRepositoryTest extends WebTestCase
         $categoryList = $crawler->filter('ul.mainMenu > li > a');
         self::assertCount(2, $categoryList);
         $listElement = $categoryList->getNode(0);
-        self::assertSame('Jeans', $listElement->nodeValue);
+        self::assertSame('test3', $listElement->nodeValue);
         $listElement = $categoryList->getNode(1);
-        self::assertSame('Pullover', $listElement->nodeValue);
+        self::assertSame('test4', $listElement->nodeValue);
     }
 
     private function createData(): void
     {
         $data = [
             [
-                'mainCategoryName' => 'jeans',
-                'displayName' => 'Jeans'
+                'mainName' => 'test3',
             ],
             [
-                'mainCategoryName' => 'pullover',
-                'displayName' => 'Pullover'
+                'mainName' => 'test4',
             ],
         ];
 
-        foreach ($data as $categoryList){
-            $mainCategory = new MainCategorys();
-
-            $mainCategory->setMainCategoryName($categoryList['mainCategoryName']);
-            $mainCategory->setDisplayName($categoryList['displayName']);
+        foreach ($data as $mainMenuData) {
+            $mainCategory = new Category();
+            $mainCategory->setName($mainMenuData['mainName']);
             $this->entityManager->persist($mainCategory);
         }
-
         $this->entityManager->flush();
-
     }
     private function createUserData(): void
     {

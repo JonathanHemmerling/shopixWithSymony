@@ -9,7 +9,7 @@
 
     <ul class="product">
     {% for product in products %}
-        <li><a href="{{ url('product', {'productId' : product.id}) }}">{{ product.displayName }}</a></li>
+        <li><a href="{{ url('product', {'productId' : product.id}) }}">{{ product.productName }}</a></li>
     {% endfor %}
     </ul>
     <a href="{{ path('entry') }}">Home</a>

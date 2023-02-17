@@ -9,7 +9,6 @@ use App\Component\User\Communication\Form\NewUserFormType;
 use App\Component\User\Communication\Form\SaveUserFormType;
 use App\Component\User\Persistence\Repository\UserRepository;
 use App\DTO\UserDataTransferObject;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

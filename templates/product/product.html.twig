@@ -6,14 +6,12 @@
 {% block body %}
 
     <h2>Product</h2>
-    {% for value in product %}
         <ul class="product">
-            <li>{{ value.displayName }}</li>
-            <li>{{ value.description }}</li>
-            <li>{{ value.price }}</li>
+            <li>{{ product.productName }}</li>
+            <li>{{ product.description }}</li>
+            <li>{{ product.price }}</li>
         </ul>
-        <a href="{{ path('allProducts', {'mainId' : value.mainId}) }}">Back</a>
-    {% endfor %}
+        <a href="{{ path('allProducts', {'mainId' : product.category.id}) }}">Back</a>
 
     <a href="{{ path('entry') }}">Home</a>
 

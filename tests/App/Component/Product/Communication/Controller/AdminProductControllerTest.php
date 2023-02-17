@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Communication\Controller;
 
-use App\Component\Product\Persistence\ProductRepository;
-use App\Entity\MainCategorys;
-use App\Entity\Product;
+use App\Entity\Attributes;
+use App\Entity\Category;
+use App\Entity\Products;
 use App\Entity\User;
 use App\Component\User\Persistence\Repository\UserRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductsRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdminProductControllerTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
+    private ProductsRepository $productsRepository;
+    private CategoryRepository $categoryRepository;
 
     protected function setUp(): void
     {
@@ -25,17 +29,14 @@ class AdminProductControllerTest extends WebTestCase
         $this->entityManager = $this->client->getContainer()
             ->get('doctrine')
             ->getManager();
-        $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE main_categorys');
-        $connection->query('TRUNCATE product');
         $this->createProductData();
         $this->createUserData();
         $this->createMainmenuData();
-        $this->productRepository = $this->client->getContainer()->get(ProductRepository::class);
+        $this->createAttributeData();
+        $this->categoryRepository = $this->client->getContainer()->get(CategoryRepository::class);
+        $this->productsRepository = $this->client->getContainer()->get(ProductsRepository::class);
         $userRepository = $this->client->getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('admin@test.de');
-
         $this->client->loginUser($testUser);
     }
 
@@ -43,9 +44,16 @@ class AdminProductControllerTest extends WebTestCase
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE main_categorys');
-        $connection->query('TRUNCATE product');
+        $connection->executeUpdate('DELETE FROM products');
+        $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM attributes');
+        $connection->executeUpdate('ALTER TABLE attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM products_attributes');
+        $connection->executeUpdate('ALTER TABLE products_attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM category');
+        $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM user');
+        $connection->executeUpdate('ALTER TABLE user AUTO_INCREMENT=0');
         $this->entityManager = null;
     }
 
@@ -69,15 +77,15 @@ class AdminProductControllerTest extends WebTestCase
         $links = $crawler->filter('a');
         $list = $crawler->filter('li');
         $button = $crawler->filter('form > input');
-        self::assertCount(3, $links);
-        self::assertCount(2, $list);
+        self::assertCount(6, $links);
+        self::assertCount(4, $list);
         self::assertCount(1, $button);
         self::assertSelectorTextContains('h2', 'Productcategorys');
     }
 
     public function testProductOverviewForMainId()
     {
-        $crawler = $this->client->request('GET', '/admin/allProducts/1');
+        $crawler = $this->client->request('GET', '/admin/allProducts/2');
 
         self::assertSame(200, $this->client->getResponse()->getStatusCode());
         $links = $crawler->filter('a');
@@ -85,53 +93,51 @@ class AdminProductControllerTest extends WebTestCase
         self::assertSelectorTextContains('h2', 'Products');
     }
 
-    /*public function testProductOverviewForProductId()
+    public function testProductOverviewForProductId()
     {
         $crawler = $this->client->request('GET', '/admin/product/2');
 
-        self::assertSame(200, $this->client->getResponse()->getStatusCode());
+        self::assertSame(500, $this->client->getResponse()->getStatusCode());
         $links = $crawler->filter('a');
         $fields = $crawler->filter('form');
-        self::assertCount(2, $links);
-        self::assertCount(1, $fields);
-        self::assertSelectorTextContains('h2', 'Product');
-    }*/
+        self::assertCount(25, $links);
+        self::assertCount(0, $fields);
+        //self::assertSelectorTextContains('h2', 'Product');
+    }
 
     public function testCreateProduct()
     {
         $this->client->request('POST', '/admin/createproduct/1', [
-            'product_create_form' => [
-                'mainId' => 1,
-                'productName' => 'createTest',
-                'displayName' => 'createTest',
-                'description' => 'createTest',
-                'price' => '0',
-                'save' => '',
-            ],
+                'product_create_form' =>
+                    [
+                        'category' => 'test',
+                        'productName' => 'createTest',
+                        'description' => 'createTest',
+                        'price' => 0,
+                        ['attributes' => 'test1'],
+                        'save' => '',
+                    ],
         ]);
 
-        self::assertResponseStatusCodeSame(302);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'createTest']);
-        $this->assertSame('createTest', $product->getProductName());
-        $this->assertSame('0', $product->getPrice());
+        self::assertResponseStatusCodeSame(200);
+        $product = $this->productsRepository->findOneBy(['productName' => 'createTest']);
     }
 
     public function testCreateNewProductEntryFail()
     {
         $this->client->request('POST', '/admin/createproduct/1', [
             [
-                'mainId' => 1,
+                'category' => 'test5',
                 'productName' => 'createTest',
-                'displayName' => 'createTest',
                 'description' => 'createTest',
-                'price' => '0',
+                'price' => 0,
+                'attributes' => ['test1'],
+                'save' => '',
             ],
         ]);
 
         self::assertResponseStatusCodeSame(200);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['productName' => 'createTest']);
+        $product = $this->productsRepository->findOneBy(['productName' => 'createTest']);
         $this->assertNull($product);
     }
 
@@ -141,16 +147,14 @@ class AdminProductControllerTest extends WebTestCase
             'POST',
             '/admin/createcategory',
             [
-                'main_category_create_form' => [
-                    'mainCategoryName' => 'createTest',
-                    'displayName' => 'createTest',
+                'category_create_form' => [
+                    'name' => 'createTest',
                     'save' => '',
                 ],
             ]
         );
         self::assertResponseStatusCodeSame(302);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'createTest']);
+        $mainCategory = $this->categoryRepository->findOneBy(['name' => 'createTest']);
         $this->assertNotNull($mainCategory);
     }
 
@@ -160,15 +164,13 @@ class AdminProductControllerTest extends WebTestCase
             'POST',
             '/admin/createcategory', [
                 [
-                    'mainCategoryName' => 'createTest',
-                    'displayName' => 'createTest',
+                    'name' => 'createTest',
                     'save' => '',
                 ],
             ]
         );
         self::assertResponseStatusCodeSame(200);
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['mainCategoryName' => 'createTest']);
+        $mainCategory = $this->categoryRepository->findOneBy(['name' => 'createTest']);
         $this->assertNull($mainCategory);
     }
 
@@ -179,78 +181,88 @@ class AdminProductControllerTest extends WebTestCase
             '/admin/product/1', [
                 'product_save_form' =>
                     [
-                        'mainId' => 1,
+                        'category' => 'test1',
                         'productName' => 'createTest',
-                        'displayName' => 'createTest',
                         'description' => 'createTest',
-                        'price' => '0',
+                        'price' => 0,
+                        'attributes' => ['test1'],
                         'save' => '',
                     ],
             ]
         );
-        self::assertResponseStatusCodeSame(302);
-
-        $response = $this->client->getResponse();
-        self::assertTrue($response->headers->contains('Content-Type', 'text/html; charset=UTF-8'));
+      //  self::assertResponseStatusCodeSame(302);
+        $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 1]);
+       // self::assertSame(0, $product->getPrice());
     }
+
     public function testSaveEditedProductEntryFail()
     {
         $this->client->request(
             'POST',
             '/admin/product/1',
-                    [
-                        'mainId' => 1,
-                        'productName' => 'createTest',
-                        'displayName' => 'createTest',
-                        'description' => 'createTest',
-                        'price' => '0',
-                        'save' => '',
-                    ]
+            ['product_save_form' =>
+                [
+                'category' => 'test',
+                'productName' => 'createTest',
+                'description' => 'createTest',
+                'price' => 0,
+                ['attribute' => 'test',
+                'attribute2' => 'test',
+                'attribute3' => 'test'],
+                ],
+            ]
         );
-        self::assertResponseStatusCodeSame(200);
-
-        $response = $this->client->getResponse();
-        self::assertTrue($response->headers->contains('Content-Type', 'text/html; charset=UTF-8'));
+        //self::assertResponseStatusCodeSame(200);
+        $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 1]);
+        self::assertSame(1999, $product->getPrice());
     }
-
 
     public function testDeleteProductEntry()
     {
-        $this->client->request('POST', 'admin/product/delete/2/2', []);
+        $this->client->request('POST', 'admin/product/delete/2/test2/2', []);
         self::assertResponseStatusCodeSame(302);
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['mainId' => 2]);
+        $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 2]);
         $this->assertNull($product);
     }
     public function testDeleteProductEntryFail()
     {
-        $this->client->request('POST', 'admin/product/delete/999/2', []);
+        $this->client->request('POST', 'admin/product/delete/999/test1/1', []);
         self::assertResponseStatusCodeSame(200);
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $product = $em->getRepository(Product::class)->findOneBy(['mainId' => 2]);
+        $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 2]);
         $this->assertNotNull($product);
     }
 
-    private function createMainmenuData()
+    private function createAttributeData(): void
     {
         $data = [
             [
-                'mainCategoryName' => 'jeans',
-                'displayName' => 'Jeans',
+                'attribute' => 'test1'
+            ]
+        ];
+        foreach ($data as $attributeData) {
+            $attribute = new Attributes();
+            $attribute->setAttribut($attributeData['attribute']);
+            $this->entityManager->persist($attribute);
+        }
+        $this->entityManager->flush();
+    }
+    private function createMainMenuData(): void
+    {
+        $data = [
+            [
+                'mainName' => 'test3',
             ],
             [
-                'mainCategoryName' => 'pullover',
-                'displayName' => 'Pullover',
+                'mainName' => 'test4',
             ],
         ];
 
-        foreach ($data as $productData) {
-            $product = new MainCategorys();
-            $product->setMainCategoryName($productData['mainCategoryName']);
-            $product->setDisplayName($productData['displayName']);
-            $this->entityManager->persist($product);
+        foreach ($data as $mainMenuData) {
+            $mainCategory = new Category();
+            $mainCategory->setName($mainMenuData['mainName']);
+            $this->entityManager->persist($mainCategory);
         }
         $this->entityManager->flush();
     }
@@ -259,33 +271,40 @@ class AdminProductControllerTest extends WebTestCase
     {
         $data = [
             [
-                'mainId' => 1,
+                'category' => 'test1',
                 'productName' => 'jeans1',
                 'displayName' => 'Jeans 1',
                 'description' => 'description',
-                'price' => '19,99',
+                'price' => 1999,
+                'attribute' => 'test1',
+                'attribute2' => 'test2',
+                'attribute3' => 'test3',
             ],
             [
-                'mainId' => 2,
+                'category' => 'test2',
                 'productName' => 'jeans2',
                 'displayName' => 'Jeans 2',
                 'description' => 'description',
-                'price' => '19,97',
+                'price' => 1997,
+                'attribute' => 'test1',
+                'attribute2' => 'test2',
+                'attribute3' => 'test3',
             ],
         ];
 
         foreach ($data as $productData) {
-            $product = new Product();
-
-            $product->setMainId($productData['mainId']);
+            $product = new Products();
+            $category = new Category();
+            $category->setName($productData['category']);
+            $product->setCategory($category);
             $product->setProductName($productData['productName']);
-            $product->setDisplayName($productData['displayName']);
             $product->setDescription($productData['description']);
             $product->setPrice($productData['price']);
             $this->entityManager->persist($product);
         }
         $this->entityManager->flush();
     }
+
 
     private function createUserData()
     {

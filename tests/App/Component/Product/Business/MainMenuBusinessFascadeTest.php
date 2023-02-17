@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Business;
 
+use App\Component\Category\Business\CategoryBusinessFascade;
+use App\Component\Category\Persistence\CategoryEntityManager;
 use App\Component\Product\Persistence\MainCategorysRepository;
-use App\Component\Product\Persistence\MainMenuEntityManager;
-use App\Component\User\Persistence\Repository\UserRepository;
+use App\DTO\CategoryDataTransferObject;
 use App\DTO\MainMenuDataTransferObject;
+use App\Entity\Category;
 use App\Entity\MainCategorys;
-use App\Entity\User;
-
+use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MainMenuBusinessFascadeTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
-    private MainCategorysRepository $mainCategorysRepository;
-    private MainMenuBusinessFascade $fascade;
+    private CategoryRepository $categorysRepository;
+    private CategoryBusinessFascade $fascade;
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,9 +29,9 @@ class MainMenuBusinessFascadeTest extends WebTestCase
         $this->entityManager = $this->client->getContainer()
             ->get('doctrine')
             ->getManager();
-        $this->createMainMenuData();
-        $this->mainCategorysRepository = $this->client->getContainer()->get(MainCategorysRepository::class);
-        $this->fascade = new MainMenuBusinessFascade(new MainMenuEntityManager($this->entityManager));
+        $this->createData();
+        $this->categorysRepository = $this->client->getContainer()->get(CategoryRepository::class);
+        $this->fascade = $this->client->getContainer()->get(CategoryBusinessFascade::class);
 
     }
 
@@ -38,59 +39,48 @@ class MainMenuBusinessFascadeTest extends WebTestCase
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE main_categorys');
+        $connection->executeUpdate('DELETE FROM products');
+        $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM category');
+        $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
         $this->entityManager = null;
     }
 
     public function testProductCreate(): void
     {
-        $mainMenuDto = new MainMenuDataTransferObject();
-        $mainMenuDto->mainCategoryName = 'test3';
-        $mainMenuDto->displayName = 'test 3';
+        $mainMenuDto = new CategoryDataTransferObject('test3');
 
         $this->fascade->create($mainMenuDto);
 
-        $product = $this->mainCategorysRepository->findOneBy(['id' => 3]);
-        self::assertSame('test3', $product->getMainCategoryName());
-        self::assertSame('test 3', $product->getDisplayName());
+        $product = $this->categorysRepository->findOneBy(['id' => 3]);
+        self::assertSame('test3', $product->getName());
     }
 
     public function testMainMenuSave():void
     {
-        $mainCategory = $this->client->getContainer()->get(MainCategorysRepository::class)->findOneBy(['id' => 1]);
-        $newDTO = new MainMenuDataTransferObject();
-        $newDTO->mainCategoryName = $mainCategory->getMainCategoryName();
-        $newDTO->displayName = 'test one';
+        $mainCategory = $this->client->getContainer()->get(CategoryRepository::class)->findOneBy(['id' => 1]);
+        $newDTO = new CategoryDataTransferObject('Test1');
 
-        $fascade = new MainMenuBusinessFascade(new MainMenuEntityManager($this->entityManager));
-        $fascade->save($mainCategory, $newDTO);
+        $this->fascade->save($mainCategory, $newDTO);
 
-        $em = $this->client->getContainer()->get('doctrine')->getManager();
-        $mainCategory = $em->getRepository(MainCategorys::class)->findOneBy(['id' => 1]);
-        self::assertSame('test1', $mainCategory->getMainCategoryName());
-        self::assertSame('test one', $mainCategory->getDisplayName());
-    }
+        $mainCategory = $this->categorysRepository->findOneBy(['id' => 1]);
+        self::assertSame('Test1', $mainCategory->getName());}
 
-    private function createMainMenuData(): void
+    private function createData(): void
     {
         $data = [
             [
-                'mainCategoryName' => 'test1',
-                'displayName' => 'test1',
-
+                'mainName' => 'test1',
             ],
             [
-                'mainCategoryName' => 'test2',
-                'displayName' => 'test2',
+                'mainName' => 'test2',
             ],
         ];
 
-        foreach ($data as $mainMenuData) {
-            $mainCategory = new MainCategorys();
-            $mainCategory->setMainCategoryName($mainMenuData['mainCategoryName']);
-            $mainCategory->setDisplayName($mainMenuData['displayName']);
-            $this->entityManager->persist($mainCategory);
+        foreach ($data as $categoryData) {
+            $category = new Category();
+            $category->setName($categoryData['mainName']);
+            $this->entityManager->persist($category);
         }
         $this->entityManager->flush();
     }

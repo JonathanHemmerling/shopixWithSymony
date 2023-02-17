@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Communication\Controller;
 
-use App\Component\Product\Business\MainMenuBusinessFascade;
+use App\Component\Category\Business\CategoryBusinessFascade;
+use App\Component\Category\Communication\Form\CategoryCreateForm;
 use App\Component\Product\Business\ProductBusinessFascade;
-use App\Component\Product\Communication\Form\MainCategoryCreateForm;
 use App\Component\Product\Communication\Form\ProductCreateForm;
 use App\Component\Product\Communication\Form\ProductSaveForm;
-use App\Component\Product\Persistence\MainCategorysRepository;
-use App\Component\Product\Persistence\ProductRepository;
-use App\DTO\MainMenuDataTransferObject;
-use App\DTO\ProductDataTransferObject;
+use App\DTO\CategoryDataTransferObject;
+use App\DTO\ProductsDataTransferObject;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,24 +24,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminProductController extends AbstractController
 {
     public function __construct(
-        private readonly MainCategorysRepository $mainCategorysRepository,
-        private readonly ProductRepository $productRepository,
+        private readonly CategoryRepository $categorysRepository,
+        private readonly ProductsRepository $productsRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProductBusinessFascade $productFascade,
-        private readonly MainMenuBusinessFascade $mainMenuFascade
+        private readonly CategoryBusinessFascade $mainMenuFascade
     ) {
     }
     #[Route("/admin/mainmenu", name: 'adminMainMenu')]
     public function entry(): Response
     {
-        $mainMenu = $this->mainCategorysRepository->findAll();
+        $mainMenu = $this->categorysRepository->findAll();
         return $this->render('admin/mainMenu.html.twig', ['menu' => $mainMenu]);
     }
     #[Route("/admin/createcategory", name: 'adminCreateCategory')]
     public function createNewCategory(Request $request): Response
     {
-        $mainDto = new MainMenuDataTransferObject();
-        $newCategory = $this->createForm(MainCategoryCreateForm::class, $mainDto);
+        $mainDto = new CategoryDataTransferObject();
+        $newCategory = $this->createForm(CategoryCreateForm::class, $mainDto);
         $newCategory->handleRequest($request);
         if ($newCategory->isSubmitted() && $newCategory->isValid()) {
             $this->mainMenuFascade->create($mainDto);
@@ -50,19 +50,19 @@ class AdminProductController extends AbstractController
         }
         return $this->render(
             'admin/createNewCategory.html.twig',
-            ['MainCategoryCreateForm' => $newCategory->createView()]
+            ['CategoryCreateForm' => $newCategory->createView()]
         );
     }
     #[Route("/admin/allProducts/{mainId}", name: "adminAllProducts")]
     public function products($mainId): Response
     {
-        $products = $this->productRepository->findBy(['mainId' => $mainId]);
+        $products = $this->productsRepository->findBy(['category' => $mainId]);
         return $this->render('admin/allProducts.html.twig', ['products' => $products, 'mainId' => $mainId]);
     }
     #[Route("/admin/createproduct/{mainId}", name: 'adminCreateProduct')]
     public function createNewProduct(Request $request, int $mainId): Response
     {
-        $productDTO = new ProductDataTransferObject();
+        $productDTO = new ProductsDataTransferObject();
         $newProductForm = $this->createForm(ProductCreateForm::class, $productDTO);
         $newProductForm->handleRequest($request);
         if ($newProductForm->isSubmitted() && $newProductForm->isValid()) {
@@ -75,25 +75,25 @@ class AdminProductController extends AbstractController
     #[Route("/admin/product/{productId}", name: "adminProduct")]
     public function saveChangedProductData(Request $request, $productId): Response
     {
-        $product = $this->productRepository->findBy(['id' => $productId]);
-        $productDTO = new ProductDataTransferObject();
+        $product = $this->productsRepository->findBy(['id' => $productId]);
+        $productDTO = new ProductsDataTransferObject();
         $saveProduct = $this->createForm(ProductSaveForm::class, $productDTO);
         $saveProduct->handleRequest($request);
-
+        //dd($saveProduct);
         if ($saveProduct->isSubmitted() && $saveProduct->isValid()) {
             $this->productFascade->save($product[0], $productDTO);
             return $this->redirectToRoute('adminMainMenu');
         }
         return $this->render(
             'admin/product.html.twig',
-            ['ProductSaveForm' => $saveProduct->createView(), 'productById' => $product]
+            ['ProductSaveForm' => $saveProduct->createView(), 'productById' => $product[0]]
         );
     }
-    #[Route("/admin/product/delete/{productId}/{mainId}", name: "adminProductDelete")]
-    public function deleteProduct($productId, $mainId): Response
+    #[Route("/admin/product/delete/{productId}/{category}/{mainId}", name: "adminProductDelete")]
+    public function deleteProduct($productId, $category ,$mainId): Response
     {
-        $singleProduct = $this->productRepository->find($productId);
-        $products = $this->productRepository->findBy(['mainId' => $mainId]);
+        $singleProduct = $this->productsRepository->find($productId);
+        $products = $this->productsRepository->findBy(['category' => $category]);
         if (isset($singleProduct)) {
             $this->entityManager->remove($singleProduct);
             $this->entityManager->flush();

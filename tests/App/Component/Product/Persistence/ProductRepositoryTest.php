@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Component\Product\Persistence;
 
 use App\Component\User\Persistence\Repository\UserRepository;
-use App\Entity\Product;
+use App\Entity\Category;
+use App\Entity\Products;
 use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -35,8 +36,16 @@ class ProductRepositoryTest extends WebTestCase
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE product');
-        $connection->query('TRUNCATE user');
+        $connection->executeUpdate('DELETE FROM products');
+        $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM attributes');
+        $connection->executeUpdate('ALTER TABLE attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM products_attributes');
+        $connection->executeUpdate('ALTER TABLE products_attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM category');
+        $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM user');
+        $connection->executeUpdate('ALTER TABLE user AUTO_INCREMENT=0');
         $this->entityManager = null;
     }
 
@@ -47,16 +56,13 @@ class ProductRepositoryTest extends WebTestCase
         self::assertSelectorTextContains('h2', 'Products');
 
         $productsList = $crawler->filter('ul.product > li > a');
-        self::assertCount(2, $productsList);
+        self::assertCount(1, $productsList);
         $productInfo = $productsList->getNode(0);
-        self::assertSame('Jeans 1', $productInfo->nodeValue);
-        $productInfo = $productsList->getNode(1);
-        self::assertSame('Jeans 2', $productInfo->nodeValue);
+        self::assertSame('jeans1', $productInfo->nodeValue);
     }
 
     public function testSingleProductPage(): void
     {
-        $this->createData();
         $crawler = $this->client->request('GET', 'product/product/1');
         self::assertResponseStatusCodeSame(200);
         self::assertSelectorTextContains('h2', 'Product');
@@ -64,53 +70,40 @@ class ProductRepositoryTest extends WebTestCase
         self::assertCount(3, $product);
 
         $productInfo = $product->getNode(0);
-        self::assertSame('Jeans 1', $productInfo->nodeValue);
+        self::assertSame('jeans1', $productInfo->nodeValue);
         $productInfo = $product->getNode(1);
-        self::assertSame('First Jeans', $productInfo->nodeValue);
+        self::assertSame('description', $productInfo->nodeValue);
         $productInfo = $product->getNode(2);
-        self::assertSame('11', $productInfo->nodeValue);
+        self::assertSame('1999', $productInfo->nodeValue);
     }
 
-    private function createData(): void
+    private function createData()
     {
         $data = [
             [
-                'mainId' => 1,
+                'category' => 'test1',
                 'productName' => 'jeans1',
                 'displayName' => 'Jeans 1',
-                'description' => 'First Jeans',
-                'price' => '11',
+                'description' => 'description',
+                'price' => 1999,
             ],
             [
-                'mainId' => 1,
+                'category' => 'test2',
                 'productName' => 'jeans2',
                 'displayName' => 'Jeans 2',
-                'description' => 'Sec Jeans',
-                'price' => '12',
+                'description' => 'description',
+                'price' => 1997,
             ],
-            [
-                'mainId' => 2,
-                'productName' => 'pullover1',
-                'displayName' => 'Pullover 1',
-                'description' => 'First Pullover',
-                'price' => '12',
-            ],
-            [
-                'mainId' => 2,
-                'productName' => 'pullover2',
-                'displayName' => 'Pullover 2',
-                'description' => 'Sec Pullover',
-                'price' => '12',
-            ],
-
         ];
-        foreach ($data as $productList){
-            $product = new Product();
-            $product->setMainId($productList['mainId']);
-            $product->setProductName($productList['productName']);
-            $product->setDisplayName($productList['displayName']);
-            $product->setDescription($productList['description']);
-            $product->setPrice($productList['price']);
+
+        foreach ($data as $productData) {
+            $product = new Products();
+            $category = new Category();
+            $category->setName($productData['category']);
+            $product->setCategory($category);
+            $product->setProductName($productData['productName']);
+            $product->setDescription($productData['description']);
+            $product->setPrice($productData['price']);
             $this->entityManager->persist($product);
         }
         $this->entityManager->flush();

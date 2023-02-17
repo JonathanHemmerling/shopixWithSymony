@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Component\User\Persistence\EntityManager;
 
-use App\Component\User\Business\UserBusinessFascade;
+use App\Component\User\Persistence\Repository\UserRepository;
 use App\DTO\UserDataTransferObject;
 use App\Entity\User;
-use App\Component\User\Persistence\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -37,7 +36,6 @@ class UserEntityManagerTest extends WebTestCase
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
         $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE product');
         $this->entityManager = null;
     }
 

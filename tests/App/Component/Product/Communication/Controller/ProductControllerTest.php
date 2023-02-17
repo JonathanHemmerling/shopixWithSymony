@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Component\Product\Communication\Controller;
 
-use App\Component\Product\Persistence\ProductRepository;
-use App\Entity\MainCategorys;
-use App\Entity\Product;
-use App\Entity\User;
 use App\Component\User\Persistence\Repository\UserRepository;
+use App\Entity\Category;
+use App\Entity\Products;
+use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProductControllerTest extends WebTestCase
 {
     private ?ObjectManager $entityManager;
-    protected function setUp():void
+
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -27,19 +27,26 @@ class ProductControllerTest extends WebTestCase
         $this->createProductData();
         $this->createUserData();
         $this->createMainmenuData();
-        $this->productRepository = $this->client->getContainer()->get(ProductRepository::class);
         $userRepository = $this->client->getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('test2@test.de');
 
         $this->client->loginUser($testUser);
     }
+
     protected function tearDown(): void
     {
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
-        $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE main_categorys');
-        $connection->query('TRUNCATE product');
+        $connection->executeUpdate('DELETE FROM products');
+        $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM attributes');
+        $connection->executeUpdate('ALTER TABLE attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM products_attributes');
+        $connection->executeUpdate('ALTER TABLE products_attributes AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM category');
+        $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
+        $connection->executeUpdate('DELETE FROM user');
+        $connection->executeUpdate('ALTER TABLE user AUTO_INCREMENT=0');
         $this->entityManager = null;
     }
 
@@ -51,11 +58,12 @@ class ProductControllerTest extends WebTestCase
         $links = $crawler->filter('a');
         $list = $crawler->filter('li');
         $button = $crawler->filter('form > input');
-        self::assertCount(2, $links);
-        self::assertCount(2, $list);
+        self::assertCount(4, $links);
+        self::assertCount(4, $list);
         self::assertCount(1, $button);
         self::assertSelectorTextContains('h2', 'Productcategorys');
     }
+
     public function testProductsOverview(): void
     {
         $crawler = $this->client->request('GET', '/product/allProducts/1');
@@ -67,6 +75,7 @@ class ProductControllerTest extends WebTestCase
         self::assertCount(1, $list);
         self::assertSelectorTextContains('h2', 'Products');
     }
+
     public function testSingleProductOverview(): void
     {
         $crawler = $this->client->request('GET', '/product/product/2');
@@ -80,53 +89,56 @@ class ProductControllerTest extends WebTestCase
     }
 
 
-    private function createMainmenuData(): void
+    private function createMainMenuData(): void
     {
         $data = [
             [
-                'mainCategoryName' => 'jeans',
-                'displayName' => 'Jeans',
+                'mainName' => 'test3',
             ],
             [
-                'mainCategoryName' => 'pullover',
-                'displayName' => 'Pullover',
-            ]
+                'mainName' => 'test4',
+            ],
         ];
 
-        foreach ($data as $productData){
-            $product = new MainCategorys();
-            $product->setMainCategoryName($productData['mainCategoryName']);
-            $product->setDisplayName($productData['displayName']);
-            $this->entityManager->persist($product);
+        foreach ($data as $mainMenuData) {
+            $mainCategory = new Category();
+            $mainCategory->setName($mainMenuData['mainName']);
+            $this->entityManager->persist($mainCategory);
         }
         $this->entityManager->flush();
     }
 
-    private function createProductData(): void
+    private function createProductData()
     {
         $data = [
             [
-                'mainId' => 1,
+                'category' => 'test1',
                 'productName' => 'jeans1',
                 'displayName' => 'Jeans 1',
                 'description' => 'description',
-                'price' => '19,99'
+                'price' => 1999,
+                'attribute' => 'test1',
+                'attribute2' => 'test2',
+                'attribute3' => 'test3',
             ],
             [
-                'mainId' => 2,
+                'category' => 'test2',
                 'productName' => 'jeans2',
                 'displayName' => 'Jeans 2',
                 'description' => 'description',
-                'price' => '19,97'
-            ]
+                'price' => 1997,
+                'attribute' => 'test1',
+                'attribute2' => 'test2',
+                'attribute3' => 'test3',
+            ],
         ];
 
-        foreach ($data as $productData){
-            $product = new Product();
-
-            $product->setMainId($productData['mainId']);
+        foreach ($data as $productData) {
+            $product = new Products();
+            $category = new Category();
+            $category->setName($productData['category']);
+            $product->setCategory($category);
             $product->setProductName($productData['productName']);
-            $product->setDisplayName($productData['displayName']);
             $product->setDescription($productData['description']);
             $product->setPrice($productData['price']);
             $this->entityManager->persist($product);
@@ -140,16 +152,16 @@ class ProductControllerTest extends WebTestCase
             [
                 'email' => 'admin@test.de',
                 'role' => 'ROLE_ADMIN',
-                'password' => 'password'
+                'password' => 'password',
             ],
             [
                 'email' => 'test2@test.de',
                 'role' => 'ROLE_USER',
-                'password' => 'password'
-            ]
+                'password' => 'password',
+            ],
         ];
 
-        foreach ($data as $userData){
+        foreach ($data as $userData) {
             $user = new User();
 
             $user->setEmail($userData['email']);

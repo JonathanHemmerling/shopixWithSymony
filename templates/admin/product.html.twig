@@ -9,9 +9,7 @@
 
     {{ form(ProductSaveForm) }}
 
-    {% for product in productById %}
-        <a href="{{ path('adminProductDelete', {'productId' : product.id, 'mainId' : product.mainId}) }}">Delete</a>
-    {% endfor %}
+    <a href="{{ path('adminProductDelete', {'productId' : productById.id, 'category' : productById.category.name, 'mainId' : productById.category.id}) }}">Delete</a>
     <a href="{{ path('entry') }}">Home</a>
 
 {% endblock %}

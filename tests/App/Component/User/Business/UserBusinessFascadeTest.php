@@ -37,7 +37,6 @@ class UserBusinessFascadeTest extends WebTestCase
         parent::tearDown();
         $connection = $this->entityManager->getConnection();
         $connection->query('TRUNCATE user');
-        $connection->query('TRUNCATE product');
         $this->entityManager = null;
     }
 

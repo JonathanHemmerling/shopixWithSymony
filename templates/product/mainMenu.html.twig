@@ -7,7 +7,7 @@
     <h2>Productcategorys</h2>
     <ul class="mainMenu">
     {%for menuItem in menu %}
-        <li><a href="{{ url('allProducts', {'mainId' : menuItem.id}) }}">{{ menuItem.displayName }}</a></li>
+        <li><a href="{{ url('allProducts', {'mainId' : menuItem.id}) }}">{{ menuItem.name }}</a></li>
     {% endfor %}
     </ul>
     <div>

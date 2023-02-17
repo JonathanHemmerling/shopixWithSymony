@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use App\Component\Product\Persistence\AttributesRepository;
+use App\Repository\AttributesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AttributesRepository::class)]
@@ -14,65 +16,40 @@ class Attributes
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $attributeName = null;
+    private ?string $attribut = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $attributeName1 = null;
+    #[ORM\ManyToMany(targetEntity: Products::class, mappedBy: 'attributes')]
+    private Collection $products;
 
-    #[ORM\Column(length: 255)]
-    private ?string $attributeName2 = null;
 
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'attr')]
-    private ?Products $products = null;
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAttributeName(): ?string
+    public function getAttribut(): ?string
     {
-        return $this->attributeName;
+        return $this->attribut;
     }
 
-    public function setAttributeName(string $attributeName): self
+    public function setAttribut(string $attribut): self
     {
-        $this->attributeName = $attributeName;
+        $this->attribut = $attribut;
 
         return $this;
     }
 
-    public function getAttributeName1(): ?string
-    {
-        return $this->attributeName1;
-    }
-
-    public function setAttributeName1(string $attributeName1): self
-    {
-        $this->attributeName1 = $attributeName1;
-
-        return $this;
-    }
-    public function getAttributeName2(): ?string
-    {
-        return $this->attributeName2;
-    }
-
-    public function setAttributeName2(string $attributeName2): self
-    {
-        $this->attributeName2 = $attributeName2;
-
-        return $this;
-    }
-    public function getProducts(): ?Products
+    /**
+     * @return Collection<int, Products>
+     */
+    public function getProducts(): Collection
     {
         return $this->products;
     }
 
-    public function setProducts(?Products $products): self
-    {
-        $this->products = $products;
-
-        return $this;
-    }
 }

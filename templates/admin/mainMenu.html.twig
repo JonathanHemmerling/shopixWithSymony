@@ -8,7 +8,7 @@
     <ul class="mainMenu">
     <a href="{{ path('adminCreateCategory') }}">Create new Category</a>
     {%for menuItem in menu %}
-        <li><a href="{{ url('adminAllProducts', {'mainId' : menuItem.id}) }}">{{ menuItem.displayName }}</a>
+        <li><a href="{{ url('adminAllProducts', {'mainId' : menuItem.id}) }}">{{ menuItem.name }}</a>
         </li>
     {% endfor %}
     </ul>

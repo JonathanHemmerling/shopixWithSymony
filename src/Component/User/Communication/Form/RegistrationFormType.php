@@ -2,7 +2,6 @@
 
 namespace App\Component\User\Communication\Form;
 
-use App\DTO\UserDataTransferObject;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

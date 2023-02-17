@@ -9,9 +9,9 @@ use App\DTO\UserDataTransferObject;
 use App\Entity\User;
 
 
-class UserBusinessFascade
+readonly class UserBusinessFascade
 {
-    public function __construct(private readonly UserDataEntityManager $entityManager)
+    public function __construct(private UserDataEntityManager $entityManager)
     {
     }
 

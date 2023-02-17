@@ -7,14 +7,3 @@ controllers:
 logout:
     path: /logout
 
-controllers_product:
-    resource:
-        path: ../src/Component/Product/Communication/
-        namespace: App\Component\Product\Communication
-    type: attribute
-
-controllers_user:
-     resource:
-        path: ../src/Component/User/Communication/
-        namespace: App\Component\User\Communication
-     type: attribute
