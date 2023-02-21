@@ -97,12 +97,12 @@ class AdminProductControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/admin/product/2');
 
-        self::assertSame(500, $this->client->getResponse()->getStatusCode());
+        self::assertSame(200, $this->client->getResponse()->getStatusCode());
         $links = $crawler->filter('a');
         $fields = $crawler->filter('form');
-        self::assertCount(25, $links);
-        self::assertCount(0, $fields);
-        //self::assertSelectorTextContains('h2', 'Product');
+        self::assertCount(2, $links);
+        self::assertCount(1, $fields);
+        self::assertSelectorTextContains('h2', 'Product');
     }
 
     public function testCreateProduct()
@@ -110,16 +110,17 @@ class AdminProductControllerTest extends WebTestCase
         $this->client->request('POST', '/admin/createproduct/1', [
                 'product_create_form' =>
                     [
-                        'category' => 'test',
+                        'attributes' => [1],
+                        'category' => 'test1',
+                        'articleNumber' => '12345',
                         'productName' => 'createTest',
-                        'description' => 'createTest',
                         'price' => 0,
-                        ['attributes' => 'test1'],
+                        'description' => 'createTest',
                         'save' => '',
                     ],
         ]);
 
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(302);
         $product = $this->productsRepository->findOneBy(['productName' => 'createTest']);
     }
 
@@ -185,14 +186,14 @@ class AdminProductControllerTest extends WebTestCase
                         'productName' => 'createTest',
                         'description' => 'createTest',
                         'price' => 0,
-                        'attributes' => ['test1'],
+                        'attribute' => 'test',
                         'save' => '',
                     ],
             ]
         );
-      //  self::assertResponseStatusCodeSame(302);
+        self::assertResponseStatusCodeSame(302);
         $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 1]);
-       // self::assertSame(0, $product->getPrice());
+        self::assertSame(0, $product->getPrice());
     }
 
     public function testSaveEditedProductEntryFail()
@@ -212,7 +213,7 @@ class AdminProductControllerTest extends WebTestCase
                 ],
             ]
         );
-        //self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(200);
         $product = $this->entityManager->getRepository(Products::class)->findOneBy(['id' => 1]);
         self::assertSame(1999, $product->getPrice());
     }
@@ -275,10 +276,8 @@ class AdminProductControllerTest extends WebTestCase
                 'productName' => 'jeans1',
                 'displayName' => 'Jeans 1',
                 'description' => 'description',
-                'price' => 1999,
                 'attribute' => 'test1',
-                'attribute2' => 'test2',
-                'attribute3' => 'test3',
+                'price' => 1999,
             ],
             [
                 'category' => 'test2',
@@ -286,9 +285,6 @@ class AdminProductControllerTest extends WebTestCase
                 'displayName' => 'Jeans 2',
                 'description' => 'description',
                 'price' => 1997,
-                'attribute' => 'test1',
-                'attribute2' => 'test2',
-                'attribute3' => 'test3',
             ],
         ];
 

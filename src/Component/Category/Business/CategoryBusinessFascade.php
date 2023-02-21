@@ -24,7 +24,4 @@ readonly class CategoryBusinessFascade
         $this->entityManager->save($categorys, $dataTransferObject);
     }
 
-//save Product-> call entitymanager and save-> mit DTO-> DTO Übergeben an FORM
-
-//Im Test von Entitymanager testen
 }

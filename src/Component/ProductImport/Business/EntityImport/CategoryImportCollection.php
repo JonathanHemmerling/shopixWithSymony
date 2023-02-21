@@ -30,5 +30,6 @@ readonly class CategoryImportCollection implements ImportCollectionInterface
             $categoryDTO = $this->categoryMapper->mapToCategoryDto($category[0]);
             $this->messageBus->dispatch($categoryDTO);
         }
+
     }
 }

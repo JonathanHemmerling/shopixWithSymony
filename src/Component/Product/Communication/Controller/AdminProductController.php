@@ -11,6 +11,7 @@ use App\Component\Product\Communication\Form\ProductCreateForm;
 use App\Component\Product\Communication\Form\ProductSaveForm;
 use App\DTO\CategoryDataTransferObject;
 use App\DTO\ProductsDataTransferObject;
+use App\Repository\AttributesRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,7 +29,8 @@ class AdminProductController extends AbstractController
         private readonly ProductsRepository $productsRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProductBusinessFascade $productFascade,
-        private readonly CategoryBusinessFascade $mainMenuFascade
+        private readonly CategoryBusinessFascade $mainMenuFascade,
+        private readonly AttributesRepository $attributesRepository
     ) {
     }
     #[Route("/admin/mainmenu", name: 'adminMainMenu')]
@@ -63,6 +65,10 @@ class AdminProductController extends AbstractController
     public function createNewProduct(Request $request, int $mainId): Response
     {
         $productDTO = new ProductsDataTransferObject();
+        $attributeArray = $this->attributesRepository->findAll();
+        $category = $this->categorysRepository->findOneBy(['id' => $mainId]);
+        $productDTO->attributes = $attributeArray;
+        $productDTO->category = $category->getName();
         $newProductForm = $this->createForm(ProductCreateForm::class, $productDTO);
         $newProductForm->handleRequest($request);
         if ($newProductForm->isSubmitted() && $newProductForm->isValid()) {
@@ -75,18 +81,23 @@ class AdminProductController extends AbstractController
     #[Route("/admin/product/{productId}", name: "adminProduct")]
     public function saveChangedProductData(Request $request, $productId): Response
     {
-        $product = $this->productsRepository->findBy(['id' => $productId]);
+        $product = $this->productsRepository->findOneBy(['id' => $productId]);
         $productDTO = new ProductsDataTransferObject();
+        //$productDTO->attributes = $product->getAttribute()->getValues();
+        $productDTO->productName = $product->getProductName();
+        $productDTO->category = $product->getCategory()->getName();
+        $productDTO->articleNumber = $product->getArticleNumber();
+        $productDTO->price = $product->getPrice();
+        $productDTO->description = $product->getDescription();
         $saveProduct = $this->createForm(ProductSaveForm::class, $productDTO);
         $saveProduct->handleRequest($request);
-        //dd($saveProduct);
         if ($saveProduct->isSubmitted() && $saveProduct->isValid()) {
-            $this->productFascade->save($product[0], $productDTO);
+            $this->productFascade->save($product, $productDTO);
             return $this->redirectToRoute('adminMainMenu');
         }
         return $this->render(
             'admin/product.html.twig',
-            ['ProductSaveForm' => $saveProduct->createView(), 'productById' => $product[0]]
+            ['ProductSaveForm' => $saveProduct->createView(), 'productById' => $product]
         );
     }
     #[Route("/admin/product/delete/{productId}/{category}/{mainId}", name: "adminProductDelete")]

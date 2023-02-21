@@ -12,31 +12,49 @@ use Predis\Client;
 readonly class ProductHandler
 {
 
-    public function __construct(private ProductsMapper $productsMapper, private ProductsRepository $productsRepository, private Client $client)
-    {
-
+    public function __construct(
+        private ProductsMapper $productsMapper,
+        private ProductsRepository $productsRepository,
+        private Client $predisClient,
+    ) {
     }
+
     public function sendProductAsJsonToRedis(int $productId): void
     {
         $product = $this->productsRepository->findOneBy(['id' => $productId]);
-        dd($product);
+        $attributes = $product->getAttribute()->getValues();
+        $attributesArray = [];
+        foreach ($attributes as $attribute) {
+            $attributesArray[] = $attribute->getAttribut();
+        }
         $key = json_encode($product->getId());
-        $value = json_encode(['category' => $product->getCategory(),
-                'articleNumber' => $product->getArticleNumber(),
-                'productName' => $product->getProductName(),
-                'price' => $product->getPrice(),
-                'description' => $product->getDescription(),
-                'attribute' => $product->getAttribute()]);
-        $this->client->set($key, $value);
+        $value = json_encode([
+            'category' => $product->getCategory()->getName(),
+            'articleNumber' => $product->getArticleNumber(),
+            'productName' => $product->getProductName(),
+            'price' => $product->getPrice(),
+            'description' => $product->getDescription(),
+            'attribute' => $attributesArray,
+        ]);
+        $this->predisClient->set($key, $value);
     }
 
-    public function getProductFromRedis(int $productId)//: ProductsDataTransferObject
+    public function getProductFromRedis(int $productId): ProductsDataTransferObject
     {
-        $product = $this->client->get($productId);
-        $decodet = json_decode($product);
-        dd($decodet);
-        $productDTO = $this->productsMapper->mapToProductsDto($decodet->attribute, $decodet->category, $decodet->articleNumber, $decodet->productName, $decodet->price, $decodet->description);
-        dd($productDTO);
+        $product = $this->predisClient->get($productId);
+        $decodetProduct = json_decode($product);
+        $productArray = [
+            'attributes' => $decodetProduct->attribute,
+            'category' => $decodetProduct->category,
+            'articleNumber' => $decodetProduct->articleNumber,
+            'productName' => $decodetProduct->productName,
+            'price' => $decodetProduct->price,
+            'description' => $decodetProduct->description,
+        ];
+        $productDTO = $this->productsMapper->mapToProductsDto(
+            $productArray
+        );
+       return $productDTO;
     }
 
 }

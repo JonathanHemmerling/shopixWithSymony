@@ -51,8 +51,9 @@ class AdminUserController extends AbstractController
     #[Route("/admin/user/{userId}", name: "adminSaveUserData")]
     public function saveChangedUserData(Request $request, $userId): Response
     {
-        $user = $this->userRepository->findBy(['id' => $userId]);
+        $user = $this->userRepository->findOneBy(['id' => $userId]);
         $userDto = new UserDataTransferObject();
+        $userDto->email= $user->getEmail();
         $saveUser = $this->createForm(SaveUserFormType::class, $userDto );
         $saveUser->handleRequest($request);
 

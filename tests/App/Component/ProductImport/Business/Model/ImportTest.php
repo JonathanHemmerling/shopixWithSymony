@@ -14,11 +14,16 @@ use App\Component\ProductImport\Business\ProductImportBusinessFascade;
 use App\Component\ProductImport\DTO\FilePathValueObject;
 use App\Mapper\AttributesMapper;
 use App\Mapper\CategoryMapper;
+use App\Message\MyMessage\AttributeMessageHandler;
+use App\Message\MyMessage\CategoryMessageHandler;
+use App\Message\MyMessage\MyMessageHandler;
 use App\Repository\ProductsRepository;
 use App\Tests\Message\MyMessage\MessageBusSpy;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Snc\RedisBundle\Client\Phpredis\Client;
+use Symfony\Component\Messenger\MessageBus;
+
 class ImportTest extends WebTestCase
 {
     private EntityManagerInterface $entityManager;
@@ -32,6 +37,10 @@ class ImportTest extends WebTestCase
     private ProductsEntityManager $productsEntityManager;
     private MessageBusSpy $messageBusSpy;
     private ProductImportBusinessFascade $productImportBusinessFascade;
+    private AttributeMessageHandler $attributeMessageHandler;
+    private CategoryMessageHandler $categoryMessageHandler;
+    private MyMessageHandler $messageHandler;
+    private $container;
 
     protected function setUp(): void
     {
@@ -40,19 +49,19 @@ class ImportTest extends WebTestCase
         $this->entityManager = $this->client->getContainer()
             ->get('doctrine')
             ->getManager();
-        $container = $this->client->getContainer();
+        $this->container = $this->client->getContainer();
         $this->attributesMapper = new AttributesMapper();
         $attributesEntityManager = new AttributesEntityManager($this->entityManager);
         $this->attributesBusinessFascade = new AttributesBusinessFascade($attributesEntityManager);
         $this->categoryMapper = new CategoryMapper();
-        $this->categoryBusinessFascade = $container->get(CategoryBusinessFascade::class);
+        $this->categoryBusinessFascade = $this->container->get(CategoryBusinessFascade::class);
         $this->productsMapper = new ProductsMapper();
-        $this->productBusinessFascade = $container->get(ProductBusinessFascade::class);
-        $this->productsRepository = $container->get(ProductsRepository::class);
-        $this->productsEntityManager = $container->get(ProductsEntityManager::class);
+        $this->productBusinessFascade = $this->container->get(ProductBusinessFascade::class);
+        $this->productsRepository = $this->container->get(ProductsRepository::class);
+        $this->productsEntityManager = $this->container->get(ProductsEntityManager::class);
         $this->messageBusSpy = new MessageBusSpy();
 
-        $this->productImportBusinessFascade = $container->get(ProductImportBusinessFascade::class);
+        $this->productImportBusinessFascade = $this->container->get(ProductImportBusinessFascade::class);
     }
 
     protected function tearDown(): void
