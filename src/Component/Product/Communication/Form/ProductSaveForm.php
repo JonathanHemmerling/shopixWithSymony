@@ -4,7 +4,6 @@ namespace App\Component\Product\Communication\Form;
 
 use App\DTO\ProductsDataTransferObject;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,19 +15,30 @@ class ProductSaveForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $choices = [];
+        $arraySize = (count($options['data']->attributes));
+        for ($i = $arraySize - 1; $i >= 0; $i--) {
+            $choices = [$i => $options['data']->attributes[$i]->getAttribut()];
+        }
         $builder
-            /*->add('attributes', ChoiceType::class, ['choices' => [$options['data']->attributes]])
-            ->get('attributes')->addModelTransformer(
-                new CallbackTransformer(
-                    function ($attributesAsArray) {
-                        return implode(', ', $attributesAsArray);
+            ->add($options['data']->attributes, ChoiceType::class,
+                [
+                    'choices' => $choices,
+                    'multiple' => true,
+                    'expanded' => true,
+                    'choice_label' => function ($value) {
+                        return $value;
                     },
-                    function ($attributesAsString) {
-                        return explode(', ', $attributesAsString);
-                    }
-                )
-            )*/
-                ->add('attributes', TextType::class)
+                    'choice_value' => function ($value){
+                        return $value;
+                    },
+                    'data' => function ($form) {
+                        return $form->getData()->getAttributes();
+                    },
+                    'mapped' => false,
+                    ])
+
+            // ->add('attributes', TextType::class)
             ->add('category', TextType::class)
             ->add('articleNumber', TextType::class)
             ->add('productName', TextType::class)

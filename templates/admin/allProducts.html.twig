@@ -14,7 +14,7 @@
         {%for product in products%}
             <tr>
                 <td>
-                    <a href="{{ url('adminProduct', {'productId' : product.id}) }}">{{ product.productName }}</a>
+                    <a href="{{ url('adminShowProduct', {'productId' : product.id}) }}">{{ product.productName }}</a>
                 </td>
                 <td>
                 </td>

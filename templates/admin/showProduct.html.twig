@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+
+    <h2>Product</h2>
+    <ul class="product">
+        <li>{{ productById.productName }}</li>
+        <li>{{ productById.description }}</li>
+        <li>{{ productById.price }}</li>
+    </ul>
+
+    <a href="{{ path('adminSaveProduct', {'productId' : productById.id}) }}">Change Data</a>
+
+    <a href="{{ path('allProducts', {'mainId' : productById.category.id}) }}">Back</a>
+
+    <a href="{{ path('entry') }}">Home</a>
+
+{% endblock %}
+
+

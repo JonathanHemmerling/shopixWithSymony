@@ -5,6 +5,9 @@ namespace App\Component\Product\Communication\Controller;
 
 use App\Component\Product\Business\ProductHandler;
 use App\Component\Product\Persistence\ProductRepository;
+use App\Component\Productstorage\Business\Model\ProductStorage;
+use App\Component\Productstorage\Persistence\ProductstorageEntityManager;
+use App\Component\Productstorage\Persistence\ProductstorageRepository;
 use App\Message\MyMessageDto;
 use App\Message\ProductMessageDto;
 use App\Repository\CategoryRepository;
@@ -21,7 +24,7 @@ class ProductController extends AbstractController
     public function __construct(
         private readonly CategoryRepository $categorysRepository,
         private readonly ProductsRepository $productsRepository,
-        private readonly ProductHandler $productHandler,
+        private readonly ProductStorage $productStorage,
     ) {
     }
 
@@ -47,7 +50,7 @@ class ProductController extends AbstractController
     public function product($productId): Response
     {
         $product = $this->productsRepository->findBy(['id' => $productId]);
-        //$product = $this->productHandler->getProductFromRedis((int)$productId);
+        //$product = $this->productStorage->getProductFromRedis((int)$productId);
         return $this->render('product/product.html.twig', ['product' => $product[0]]);
     }
 }

@@ -78,12 +78,20 @@ class AdminProductController extends AbstractController
         return $this->render('admin/createNewProduct.html.twig', ['ProductCreateForm' => $newProductForm->createView()]
         );
     }
-    #[Route("/admin/product/{productId}", name: "adminProduct")]
+    #[Route("/admin/product/{productId}", name: "adminShowProduct")]
+    public function showSingleProduct(Request $request, $productId): Response
+    {
+        $product = $this->productsRepository->findOneBy(['id' => $productId]);
+        return $this->render(
+            'admin/showProduct.html.twig', ['productById' => $product]
+        );
+    }
+    #[Route("/admin/saveproduct/{productId}", name: "adminSaveProduct")]
     public function saveChangedProductData(Request $request, $productId): Response
     {
         $product = $this->productsRepository->findOneBy(['id' => $productId]);
         $productDTO = new ProductsDataTransferObject();
-        //$productDTO->attributes = $product->getAttribute()->getValues();
+        $productDTO->attributes = $product->getAttribute()->getValues();
         $productDTO->productName = $product->getProductName();
         $productDTO->category = $product->getCategory()->getName();
         $productDTO->articleNumber = $product->getArticleNumber();
@@ -96,7 +104,7 @@ class AdminProductController extends AbstractController
             return $this->redirectToRoute('adminMainMenu');
         }
         return $this->render(
-            'admin/product.html.twig',
+            'admin/saveProduct.html.twig',
             ['ProductSaveForm' => $saveProduct->createView(), 'productById' => $product]
         );
     }

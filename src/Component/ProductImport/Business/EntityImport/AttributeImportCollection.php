@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Component\ProductImport\Business\EntityImport;
 
-use App\Mapper\AttributesMapper;
+use App\Component\Attributes\Mapper\AttributesMapper;
 use League\Csv\MapIterator;
 use Symfony\Component\Messenger\MessageBusInterface;
 

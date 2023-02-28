@@ -8,6 +8,7 @@ framework:
             product: '%env(MESSENGER_TRANSPORT_DSN)%'
             attributes: '%env(ATTRIBUTE_TRANSPORT_DSN)%'
             category: '%env(CATEGORY_TRANSPORT_DSN)%'
+            productredis: '%env(PRODUCT_REDIS_TRANSPORT_DSN)%'
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
@@ -16,6 +17,7 @@ framework:
             'App\DTO\ProductsDataTransferObject': product
             'App\DTO\AttributesDataTransferObject': attributes
             'App\DTO\CategoryDataTransferObject': category
+            'App\DTO\RedisDataTransferObject': productredis
 
 when@test:
     framework:
@@ -23,5 +25,9 @@ when@test:
             transports:
                 # replace with your transport name here (e.g., my_transport: 'in-memory://')
                 # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-                async: 'in-memory://'
-                async_priority_high: 'in-memory://'
+                async: 'test://'
+                async_priority_high: 'test://'
+                product: 'test://'
+                attributes: 'test://'
+                productredis: 'test://'
+                category: 'test://'

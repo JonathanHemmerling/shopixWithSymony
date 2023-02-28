@@ -6,7 +6,7 @@ namespace App\DTO;
 
 class CategoryDataTransferObject
 {
-    public function __construct(public string $name = '', public int|null $id = null)
+    public function __construct(public string $name = '', public int|null $id = null, public array $products = [])
     {
     }
 }
