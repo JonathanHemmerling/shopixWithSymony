@@ -2,30 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Component\Productstorage\Business;
+namespace App\Tests\Component\Service\ElasticSearch\Model;
 
 use App\Component\Product\Mapper\ProductsMapper;
 use App\Component\Productstorage\Business\Model\ProductStorage;
-use App\Component\Productstorage\Business\ProductstorageBusinessFascade;
 use App\Component\Productstorage\Mapper\RedisMapper;
-use App\Component\Productstorage\Persistence\ProductstorageEntityManager;
+use App\Component\Service\ElasticSearch\Model\Document;
 use App\Entity\Category;
 use App\Entity\Products;
 use App\Repository\ProductsRepository;
+use Doctrine\ORM\EntityManager;
 use Predis\Client;
-use Predis\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Elastica\Client as ElasticaClient;
 
-class ProductstorageBusinessFascadeTest extends WebTestCase
+class DocumentTest extends WebTestCase
 {
-    private RedisMapper $redisMapper;
+    private EntityManager $entityManager;
     private ProductsRepository $productsRepository;
-    private ProductStorage $productStorage;
-    private ProductstorageBusinessFascade $productstorageBusinessFascade;
-    private ClientInterface $redisClient;
-    private ProductsMapper $productsMapper;
-
+    private Document $document;
+    private ElasticaClient $elasticaClient;
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,23 +31,14 @@ class ProductstorageBusinessFascadeTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $this->container = $this->client->getContainer();
-        $this->redisMapper = $this->container->get(RedisMapper::class);
-        $this->productsMapper = $this->container->get(ProductsMapper::class);
         $this->productsRepository = $this->container->get(ProductsRepository::class);
-        $this->redisClient = $this->getMockBuilder(Client::class)->addMethods(['set', 'get'])->getMock();
-        $this->productStorage = new ProductStorage($this->productsMapper,$this->redisMapper, $this->productsRepository, $this->redisClient, $this->container->get(MessageBusInterface::class));
-        $this->productstorageBusinessFascade = new ProductstorageBusinessFascade(
-            $this->redisMapper,
-            $this->productStorage,
-            $this->productsRepository,
-        );
+        $this->elasticaClient = $this->container->get(ElasticaClient::class);
+        $this->document = new Document($this->elasticaClient, $this->productsRepository);
         $this->createProductData();
     }
-
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->redisClient->flushall();
         $connection = $this->entityManager->getConnection();
         $connection->executeUpdate('DELETE FROM products');
         $connection->executeUpdate('ALTER TABLE products AUTO_INCREMENT=0');
@@ -60,32 +48,49 @@ class ProductstorageBusinessFascadeTest extends WebTestCase
         $connection->executeUpdate('ALTER TABLE products_attributes AUTO_INCREMENT=0');
         $connection->executeUpdate('DELETE FROM category');
         $connection->executeUpdate('ALTER TABLE category AUTO_INCREMENT=0');
+        $this->document->delete();
         $this->entityManager->close();
     }
-
-    public function testCreateRedisEntry(): void
+    public function testIfDocumentUploadWorks()
     {
-        $this->redisClient->expects($this->once())->method('set')->with('"Product:1"', '{"category":"test1","articleNumber":"12345","productName":"value","price":1999,"description":"description","attributes":[]}');
-        $this->redisClient->expects($this->once())->method('get')->with('1')->willReturn('{"category":"test1","articleNumber":"12345","productName":"value","price":1999,"description":"description","attributes":[]}');
+        $this->document->add();
+        $document = $this->document->getAllProducts(4);
 
-        $this->productstorageBusinessFascade->createRedisEntry('value');
-
-        $value = $this->redisClient->get('1');
-        self::assertSame(
-            '{"category":"test1","articleNumber":"12345","productName":"value","price":1999,"description":"description","attributes":[]}',
-            $value
-        );
+        self::assertSame('', $document);
     }
-
     private function createProductData()
     {
         $data = [
             [
-                'category' => 'test1',
+                'category' => '1',
                 'articleNumber' => '12345',
-                'productName' => 'value',
+                'productName' => 'jeans1',
                 'description' => 'description',
-                'attribute' => 'test1',
+                'attributes' => 'test1',
+                'price' => 1999,
+            ],
+            [
+                'category' => '1',
+                'articleNumber' => '12345',
+                'productName' => 'jeans2',
+                'description' => 'description',
+                'attributes' => 'test1',
+                'price' => 1999,
+            ],
+            [
+                'category' => '2',
+                'articleNumber' => '12345',
+                'productName' => 'jeans1',
+                'description' => 'description',
+                'attributes' => 'test1',
+                'price' => 1999,
+            ],
+            [
+                'category' => '3',
+                'articleNumber' => '12345',
+                'productName' => 'jeans1',
+                'description' => 'description',
+                'attributes' => 'test1',
                 'price' => 1999,
             ],
         ];
@@ -103,4 +108,5 @@ class ProductstorageBusinessFascadeTest extends WebTestCase
         }
         $this->entityManager->flush();
     }
+
 }

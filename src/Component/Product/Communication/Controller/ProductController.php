@@ -3,11 +3,13 @@
 declare(strict_types=1);
 namespace App\Component\Product\Communication\Controller;
 
+use App\Component\Categorystorage\Business\Model\CategoryStorage;
 use App\Component\Product\Business\ProductHandler;
 use App\Component\Product\Persistence\ProductRepository;
 use App\Component\Productstorage\Business\Model\ProductStorage;
 use App\Component\Productstorage\Persistence\ProductstorageEntityManager;
 use App\Component\Productstorage\Persistence\ProductstorageRepository;
+use App\Component\Service\ElasticSearch\Model\Document;
 use App\Message\MyMessageDto;
 use App\Message\ProductMessageDto;
 use App\Repository\CategoryRepository;
@@ -25,6 +27,8 @@ class ProductController extends AbstractController
         private readonly CategoryRepository $categorysRepository,
         private readonly ProductsRepository $productsRepository,
         private readonly ProductStorage $productStorage,
+        private readonly CategoryStorage $categoryStorage,
+        private readonly Document $document,
     ) {
     }
 
@@ -34,15 +38,15 @@ class ProductController extends AbstractController
         if($this->isGranted('ROLE_ADMIN')){
             return $this->render('admin/adminOverview.html.twig');
         }
-        $mainMenu = $this->categorysRepository->findAll();
+        $mainMenu = $this->document->getAllCategorys();
         return $this->render('product/mainMenu.html.twig', ['menu' => $mainMenu]);
     }
 
 
-    #[Route("/product/allProducts/{mainId}", name: "allProducts")]
-    public function products($mainId): Response
+    #[Route("/product/allProducts/{categoryName}", name: "allProducts")]
+    public function products(string $categoryName): Response
     {
-        $products = $this->productsRepository->findBy(['category' => $mainId]);
+        $products = $this->document->getAllProducts($categoryName);
         return $this->render('product/allProducts.html.twig', ['products' => $products]);
     }
 
@@ -50,7 +54,7 @@ class ProductController extends AbstractController
     public function product($productId): Response
     {
         $product = $this->productsRepository->findBy(['id' => $productId]);
-        //$product = $this->productStorage->getProductFromRedis((int)$productId);
+        $product = $this->productStorage->getProductFromRedis((int)$productId);
         return $this->render('product/product.html.twig', ['product' => $product[0]]);
     }
 }

@@ -30,8 +30,7 @@ class CategoryStorage
     {
         $category = $this->categoryRepository->findOneBy(['id' => $categoryId]);
         $products = $this->productsRepository->findBy(['category' => $categoryId]);
-        dd($products);
-        $categoryDTO = $this->categoryMapper->mapToRedisCategoryDto(['name' => $category->getName(), 'id' => $category->getId(), 'products' => $category->getProducts()->getValues()]);
+        $categoryDTO = $this->categoryMapper->mapTocRedisCategoryDto(['name' => $category->getName(), 'id' => $category->getId(), 'products' => $category->getProducts()->getValues()]);
         $this->messageBus->dispatch($categoryDTO);
         return $categoryDTO;
     }
@@ -51,11 +50,25 @@ class CategoryStorage
         $key = self::buildKey((int)$categoryId);
         $encodetKey = json_encode($key);
         $category = $this->predisClient->mget($encodetKey);
-        $decodetCategory = json_decode($category, true);
+        $decodetCategory = json_decode($category[0], true);
         $categoryDTO = $this->categoryMapper->mapToCategoryDto(
             $decodetCategory
         );
         return $categoryDTO;
+    }
+    public function getAllCategorysFromRedis():array
+    {
+        $categorysId = $this->predisClient->keys('*');
+        $categorys = [];
+        foreach ($categorysId as $categoryId){
+            $sub = substr_replace($categoryId, '', 0, 10);
+            $id = (int)substr_replace($sub, '', 1);
+            $category = $this->predisClient->mget($categoryId);
+            $decodetCategory = json_decode($category[0], true);
+            $categoryDTO = $this->categoryMapper->mapToRedisCategoryDto(['name' => $decodetCategory['category'], 'id' => $id]);
+            $categorys[] = $categoryDTO;
+        }
+        return $categorys;
     }
     private function buildKey(int $id): string
     {

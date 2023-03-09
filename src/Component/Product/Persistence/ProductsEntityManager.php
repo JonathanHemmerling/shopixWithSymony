@@ -8,6 +8,7 @@ use App\Component\Productstorage\Business\ProductstorageBusinessFascade;
 use App\Component\Productstorage\Mapper\RedisMapper;
 use App\Component\Productstorage\Persistence\ProductstorageEntityManager;
 use App\DTO\ProductsDataTransferObject;
+use App\DTO\RedisDataTransferObject;
 use App\Entity\Products;
 use App\Repository\AttributesRepository;
 use App\Repository\CategoryRepository;
@@ -37,6 +38,24 @@ readonly class ProductsEntityManager
         $this->entityManager->flush();
         $this->productstorageBusinessFascade->createRedisEntry($productDTO->productName);
     }
+    public function createRedis(RedisDataTransferObject $productDTO): void
+    {
+        $newProduct = new Products();
+        $newProduct->setArticleNumber($productDTO->articleNumber);
+        $newProduct->setProductName($productDTO->productName);
+        $newProduct->setPrice($productDTO->price);
+        $newProduct->setDescription($productDTO->description);
+        $categoryData = $this->categoryRepository->findOneOrCreate($productDTO->category);
+        $newProduct->setCategory($categoryData);
+        foreach ($productDTO->attributes as $attribute) {
+            $attributeData = $this->attributesRepository->findOneOrCreate($attribute);
+            $newProduct->addAttribute($attributeData);
+        }
+        $this->entityManager->persist($newProduct);
+        $this->entityManager->flush();
+        $this->productstorageBusinessFascade->createRedisEntry($productDTO->productName);
+    }
+
 
     public function save(Products $product, ProductsDataTransferObject $productsDTO): void
     {

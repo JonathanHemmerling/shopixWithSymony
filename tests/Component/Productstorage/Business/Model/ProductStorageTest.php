@@ -89,7 +89,6 @@ class ProductStorageTest extends WebTestCase
         ],
         );
         $this->productStorage->sendProductAsJsonToRedis($product);
-
         $value = $this->redisClient->get('"Product:6"');
         self::assertSame(
             '{"category":"test","articleNumber":"12345","productName":"testRedis","price":199,"description":"testRedis","attributes":["testRedis"]}',

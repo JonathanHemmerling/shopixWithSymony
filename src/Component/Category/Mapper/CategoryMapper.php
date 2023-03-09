@@ -20,7 +20,6 @@ class CategoryMapper
         return new CategoryDataTransferObject(
             $category['name'],
             $category['id'],
-            $category['products'],
         );
     }
 }

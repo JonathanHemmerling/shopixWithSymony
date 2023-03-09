@@ -15,6 +15,7 @@
         "league/csv": "*",
         "ocramius/proxy-manager": "^1.0",
         "predis/predis": "v2.1.1",
+        "ruflin/elastica": "*",
         "snc/redis-bundle": "^4.6",
         "symfony/amqp-messenger": "6.2.*",
         "symfony/asset": "6.2.*",

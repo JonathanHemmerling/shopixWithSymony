@@ -8,6 +8,10 @@ parameters:
     app.env: '%env(APP_ENV)%'
 
 services:
+    Elastica\Client:
+        arguments:
+            - { host: 'localhost', port: 9200 }
+
     Predis\Client: '@snc_redis.default'
     Predis\Client $redisSecond: '@snc_redis.redis_second'
     # default configuration for services in *this* file

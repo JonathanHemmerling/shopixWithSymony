@@ -6,6 +6,7 @@ namespace App\Component\Product\Business;
 
 use App\Component\Product\Persistence\ProductsEntityManager;
 use App\DTO\ProductsDataTransferObject;
+use App\DTO\RedisDataTransferObject;
 use App\Entity\Products;
 
 readonly class ProductBusinessFascade
@@ -17,8 +18,13 @@ readonly class ProductBusinessFascade
     {
         $this->entityManager->create($productsDTO);
     }
+    public function createRedis(RedisDataTransferObject $productsDTO):void
+    {
+        $this->entityManager->createRedis($productsDTO);
+    }
     public function save(Products $product, ProductsDataTransferObject $productsDTO):void
     {
         $this->entityManager->save($product, $productsDTO);
     }
+
 }

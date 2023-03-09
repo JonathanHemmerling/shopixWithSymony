@@ -71,7 +71,6 @@ class ProductStorage
         );
         return $productDTO;
     }
-
     private function buildKey(int $id): string
     {
         $key = 'Product:' . $id;

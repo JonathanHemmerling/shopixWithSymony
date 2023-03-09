@@ -9,6 +9,7 @@ use App\Component\Categorystorage\Business\Model\CategoryStorage;
 use App\Entity\Category;
 use App\Entity\Products;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Predis\Client;
 use Predis\ClientInterface;
@@ -38,11 +39,14 @@ class CategorystorageTest extends WebTestCase
         $messageBus = $this->container->get(MessageBusInterface::class);
         $this->categoryMapper = $this->container->get(CategoryMapper::class);
         $this->redisClient = $this->container->get(Client::class);
+        $productsRepository = $this->container->get(ProductsRepository::class);
         $this->categorystorage = new CategoryStorage(
             $this->categoryMapper,
             $categoryRepository,
             $this->redisClient,
-            $messageBus
+            $messageBus,
+            $productsRepository,
+
         );
         $this->createProductData();
     }
@@ -80,9 +84,15 @@ class CategorystorageTest extends WebTestCase
     }
     public function testGetProductsFromRedis()
     {
-        $key = json_encode('Category:1');
-        $value = json_encode(['name' => 'testName', 'products' => ['testproduct1', 'testproduct2']]);
-        $this->redisClient->set($key, $value);
+        $key1 = json_encode('Category:1');
+        $value1 = json_encode(['name' => 'testName', 'products' => ['testproduct1', 'testproduct2']]);
+        $key2 = json_encode('Category:2');
+        $value2 = json_encode(['name' => 'testName2', 'products' => ['testproduct1', 'testproduct2']]);
+
+        $this->redisClient->set($key2, $value2);
+        $this->redisClient->set($key1, $value1);
+
+        $results = $this->categorystorage->getAllCategorysFromRedis();
         $category = $this->categorystorage->getCategoryFromRedis('1');
         self::assertSame('testName', $category->name);
     }

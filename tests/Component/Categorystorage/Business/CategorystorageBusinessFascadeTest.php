@@ -7,11 +7,14 @@ namespace App\Tests\Component\Categorystorage\Business;
 use App\Component\Category\Mapper\CategoryMapper;
 use App\Component\Categorystorage\Business\CategorystorageBusinessFascade;
 use App\Component\Categorystorage\Business\Model\CategoryStorage;
+use App\Component\Productstorage\Business\Model\ProductStorage;
+use App\Component\Service\ElasticSearch\Factory\ClientFactory;
 use App\Entity\Category;
 use App\Entity\Products;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManager;
+use Elastica\Document;
 use Predis\Client;
 use Predis\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -63,6 +66,7 @@ class CategorystorageBusinessFascadeTest extends WebTestCase
 
     public function testCreateRedisEntry(): void
     {
+
         $this->categorystorageBusinessFascade->createRedisEntry(1);
 
         $value = $this->redisClient->get('"Category:1"');
